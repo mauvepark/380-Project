@@ -6,7 +6,7 @@ public class DatabaseManager {
     private static DatabaseManager instance;
     private Connection dbConnect;
 
-    private static final String DB_URL = "jdbc:postgresql://localhost/ensf380project";
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/ensf380project";
     private static final String DB_USER = "oop";
     private static final String DB_PASSWORD = "ucalgary";
 
