@@ -22,18 +22,6 @@ public class DisasterVictim {
 
     // constructors
     // refactored constructor to use new Person class
-    public DisasterVictim(Person person, LocalDate ENTRY_DATE) throws IllegalArgumentException {
-        if (ENTRY_DATE == null) {
-            throw new IllegalArgumentException("Entry date cannot be null");
-        }
-        this.person = person;
-        this.ENTRY_DATE = ENTRY_DATE;
-        this.familyConnections = new FamilyRelation[0];
-        this.medicalRecords = new MedicalRecord[0];
-        this.personalBelongings = new Supply[0];
-    }
-
-    // refactored constructor to use new Person class
     public DisasterVictim(Person person, LocalDate entryDate, LocalDate dateOfBirth) {
         if (entryDate == null) {
             throw new IllegalArgumentException("Entry date cannot be null");
@@ -47,10 +35,19 @@ public class DisasterVictim {
             throw new IllegalArgumentException("Date of birth cannot be in the future");
         }
 
+        if (person == null) {
+            throw new IllegalArgumentException("Person cannot be null");
+        }
+
         this.person = person;
         this.ENTRY_DATE = entryDate;
         this.dateOfBirth = dateOfBirth;
         this.approximateAge = null;
+        this.familyConnections = new FamilyRelation[0];
+        this.medicalRecords = new MedicalRecord[0];
+        this.personalBelongings = new Supply[0];
+
+
     }
 
     // NEW: constructor for when we only have approximate age
@@ -63,18 +60,21 @@ public class DisasterVictim {
             throw new IllegalArgumentException("Approximate age cannot be negative");
         }
 
+        if (person == null) {
+            throw new IllegalArgumentException("Person cannot be null");
+        }
+
         this.person = person;
         this.ENTRY_DATE = entryDate;
         this.approximateAge = approximateAge;
         this.dateOfBirth = null;
+        this.familyConnections = new FamilyRelation[0];
+        this.medicalRecords = new MedicalRecord[0];
+        this.personalBelongings = new Supply[0];
+        
     }
 
     // setters and getters
-
-    // NEW: age validation
-    public boolean hasValidAgeInfo() {
-        return (dateOfBirth != null && approximateAge == null) || (dateOfBirth == null && approximateAge != null);
-    }
 
     // NEW: getters for person and person ID
     public Person getPerson() {
