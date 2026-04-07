@@ -70,6 +70,12 @@ public class DisasterVictim {
     }
 
     // setters and getters
+
+    // NEW: age validation
+    public boolean hasValidAgeInfo() {
+        return (dateOfBirth != null && approximateAge == null) || (dateOfBirth == null && approximateAge != null);
+    }
+
     // NEW: getters for person and person ID
     public Person getPerson() {
         return person;
@@ -90,6 +96,10 @@ public class DisasterVictim {
 
         if (dateOfBirth.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Date of birth cannot be in the future");
+        }
+
+        if (!hasValidAgeInfo()) {
+            throw new IllegalStateException("Invalid age configuration");
         }
 
         this.dateOfBirth = dateOfBirth;
@@ -141,6 +151,10 @@ public class DisasterVictim {
 
         if (this.dateOfBirth != null) {
             throw new IllegalStateException("Cannot replace birthdate with approximate age");
+        }
+
+        if (!hasValidAgeInfo()) {
+            throw new IllegalStateException("Invalid age configuration");
         }
 
         this.approximateAge = approximateAge;
