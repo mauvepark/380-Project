@@ -89,23 +89,6 @@ public class DisasterVictim {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        if (dateOfBirth == null) {
-            throw new IllegalArgumentException("Date of birth cannot be null");
-        }
-
-        if (dateOfBirth.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Date of birth cannot be in the future");
-        }
-
-        if (!hasValidAgeInfo()) {
-            throw new IllegalStateException("Invalid age configuration");
-        }
-
-        this.dateOfBirth = dateOfBirth;
-        this.approximateAge = null;
-    }
-
     public FamilyRelation[] getFamilyConnections() {
         return familyConnections;
     }
@@ -143,18 +126,25 @@ public class DisasterVictim {
         return approximateAge;
     }
 
-    // NEW: approximate age setter
+    // NEW: approximate age and date of birth setters
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        if (dateOfBirth == null) {
+            throw new IllegalArgumentException("Date of birth cannot be null");
+        }
+        if (dateOfBirth.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Date of birth cannot be in the future");
+        }
+
+        this.dateOfBirth = dateOfBirth;
+        this.approximateAge = null;
+    }
+
     public void setApproximateAge(int approximateAge) {
         if (approximateAge < 0) {
             throw new IllegalArgumentException("Approximate age cannot be negative");
         }
-
         if (this.dateOfBirth != null) {
             throw new IllegalStateException("Cannot replace birthdate with approximate age");
-        }
-
-        if (!hasValidAgeInfo()) {
-            throw new IllegalStateException("Invalid age configuration");
         }
 
         this.approximateAge = approximateAge;
