@@ -1,64 +1,112 @@
-/*
-Copyright Ann Barcomb and Khawla Shnaikat, 2024-2025
-Licensed under GPL v3
-See LICENSE.txt for more information.
-*/
-
 package edu.ucalgary.oop;
+
 import java.time.LocalDate;
 
 public class Supply {
-    private String type;
-    private int quantity;
     private int id;
     private String supplyType;
-    private Location location;
+    private Integer locationId;
     private Integer victimId;
     private LocalDate expiryDate;
     private LocalDate allocationDate;
     private String description;
 
-    public Supply(String type, int quantity) throws IllegalArgumentException {
-        this.type = type;
-        setQuantity(quantity); // Use setter for validation
+    // constructors
+    public Supply(int id, String supplyType, Integer locationId, Integer victimId, 
+                  LocalDate expiryDate, LocalDate allocationDate, String description) {
+        setSupplyType(supplyType); // for validation
+        this.id = id;
+        this.locationId = locationId;
+        this.victimId = victimId;
+        this.expiryDate = expiryDate;
+        this.allocationDate = allocationDate;
+        this.description = description;
     }
 
-    // setters and getters
-    public void setType(String type) {
-        this.type = type;
+    // constructor no ID
+    public Supply(String supplyType, Integer locationId, Integer victimId,
+                  LocalDate expiryDate, LocalDate allocationDate, String description) {
+        setSupplyType(supplyType); // for validation
+        this.locationId = locationId;
+        this.victimId = victimId;
+        this.expiryDate = expiryDate;
+        this.allocationDate = allocationDate;
+        this.description = description;
     }
-    
-    public void setQuantity(int quantity) throws IllegalArgumentException {
-        if (quantity < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
+
+    // getters and setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Supply id cannot be negative.");
         }
-        this.quantity = quantity;
-    }
-    
-    public String getType() {
-        return this.type;
+        this.id = id;
     }
 
-    public int getQuantity() {
-        return this.quantity;
+    public String getSupplyType() {
+        return supplyType;
     }
 
-        boolean isPerishable() {
+    public void setSupplyType(String supplyType) {
+        if (supplyType == null || supplyType.trim().isEmpty()) {
+            throw new IllegalArgumentException("Supply type cannot be null or empty.");
+        }
+        this.supplyType = supplyType;
+    }
+
+    public Integer getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Integer locationId) {
+        this.locationId = locationId;
+    }
+
+    public Integer getVictimId() {
+        return victimId;
+    }
+
+    public void setVictimId(Integer victimId) {
+        this.victimId = victimId;
+    }
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public LocalDate getAllocationDate() {
+        return allocationDate;
+    }
+
+    public void setAllocationDate(LocalDate allocationDate) {
+        this.allocationDate = allocationDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    // NEW: methods for expiry tracking
+    public boolean isPerishable() {
         return expiryDate != null;
     }
 
-    boolean isExpired() {
-        if (expiryDate == null) {
-            return false;
-        }
-        return LocalDate.now().isAfter(expiryDate);
+    public boolean isExpired() {
+        return expiryDate != null && expiryDate.isBefore(LocalDate.now());
     }
 
-    boolean isAllocated() {
+    public boolean isAllocated() {
         return victimId != null;
-    }
-
-    boolean isAvailable() {
-        return !isExpired() && !isAllocated();
     }
 }
