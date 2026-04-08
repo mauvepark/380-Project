@@ -8,6 +8,7 @@ public class ActionLogger {
     private static ActionLogger instance;
     private static final String LOG_PATH = "data/action_log.txt";
 
+    // constructor
     public static ActionLogger getInstance() {
         if (instance == null) {
             instance = new ActionLogger();
@@ -15,6 +16,7 @@ public class ActionLogger {
         return instance;
     }
 
+    // log action in format specified in requirements
     public void log(String actionType, String description) {
         String line = "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+ "] " + actionType + " | " + description;
 
@@ -24,7 +26,7 @@ public class ActionLogger {
         } 
         
         catch (IOException e) {
-            System.err.println("Warning: could not write to action log.");
+            System.err.println("Could not write to action log.");
         }
 }
 }

@@ -5,10 +5,12 @@ import java.sql.*;
 public class VictimRepository {
     private final Connection dbConnect;
 
+    // constructor
     public VictimRepository(Connection dbConnect) {
         this.dbConnect = dbConnect;
     }
 
+    // add new person
     public int insertPerson(String firstName, String lastName, String comments) {
         String query = "INSERT INTO Person (first_name, last_name, comments) VALUES (?, ?, ?) RETURNING id";
 
@@ -29,6 +31,7 @@ public class VictimRepository {
         throw new RuntimeException("Failed to insert person.");
     }
 
+    // add new disaster victim
     public void insertDisasterVictim(int personId, java.time.LocalDate dateOfBirth, Integer approximateAge, String gender, java.time.LocalDate entryDate, Integer locationId) {
         String query = "INSERT INTO DisasterVictim (person_id, date_of_birth, approximate_age, gender, entry_date, location_id, is_soft_deleted) VALUES (?, ?, ?, ?, ?, ?, FALSE)";
 
@@ -62,6 +65,7 @@ public class VictimRepository {
         }
     }
 
+    // update victim name
     public void updateVictimName(int personId, String newFirstName, String newLastName) {
         String query = "UPDATE Person SET first_name = ?, last_name = ? WHERE id = ?";
 
@@ -79,6 +83,7 @@ public class VictimRepository {
         }
     }
 
+    // update victim age
     public void updateVictimAgeInfo(int personId, java.time.LocalDate dateOfBirth, Integer approximateAge) {
         String query = "UPDATE DisasterVictim SET date_of_birth = ?, approximate_age = ? WHERE person_id = ?";
 
@@ -106,6 +111,7 @@ public class VictimRepository {
         }
     }
 
+    // soft delete victim
     public void softDeleteVictim(int personId) {
         String query = "UPDATE DisasterVictim SET is_soft_deleted = TRUE WHERE person_id = ?";
 
@@ -121,6 +127,7 @@ public class VictimRepository {
         }
     }
 
+    // hard delete victim
     public void hardDeleteVictim(int personId) {
         String deleteInquiry = "DELETE FROM Inquiry WHERE inquirer_id = ? OR subject_person_id = ?";
         String deleteRelationships = "DELETE FROM FamilyRelationship WHERE person_one_id = ? OR person_two_id = ?";
@@ -160,6 +167,7 @@ public class VictimRepository {
         }
     }
 
+    // get active victims
     public ResultSet getActiveVictims() {
         String query = "SELECT p.id, p.first_name, p.last_name, p.comments, dv.date_of_birth, dv.approximate_age, dv.gender, dv.entry_date, dv.location_id FROM Person p JOIN DisasterVictim dv ON p.id = dv.person_id WHERE dv.is_soft_deleted = FALSE ORDER BY p.id";
 

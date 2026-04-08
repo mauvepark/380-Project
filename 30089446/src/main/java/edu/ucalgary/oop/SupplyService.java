@@ -1,7 +1,6 @@
 package edu.ucalgary.oop;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +44,12 @@ public class SupplyService {
 
     // loads supplies from the database by locaiton
     public List<Supply> getSuppliesByLocation(int locationId) {
-        String sql = """SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description 
+        String sql = """
+                        SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description 
                         FROM Supply 
                         WHERE location_id = ? 
-                        ORDER BY id""";
+                        ORDER BY id
+                    """;
 
         List<Supply> supplies = new ArrayList<>();
 
@@ -72,10 +73,12 @@ public class SupplyService {
 
     // loads supplies from database non-expired non-allocated
     public List<Supply> getAvailableInventoryForAllocation(int locationId) {
-        String sql = """SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description 
+        String sql = """
+                        SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description 
                         FROM Supply 
                         WHERE location_id = ? AND victim_id IS NULL AND (expiry_date IS NULL OR expiry_date >= CURRENT_DATE) 
-                        ORDER BY supply_type, id""";
+                        ORDER BY supply_type, id
+                    """;
 
         List<Supply> supplies = new ArrayList<>();
 
@@ -99,11 +102,13 @@ public class SupplyService {
 
     // loads expired supplies by location
     public List<Supply> getExpiredSuppliesByLocation(int locationId) {
-        String sql = """SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, 
+        String sql = """
+                        SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, 
                         description FROM Supply WHERE location_id = ?
                         AND expiry_date IS NOT NULL
                         AND expiry_date < CURRENT_DATE
-                        ORDER BY expiry_date, id""";
+                        ORDER BY expiry_date, id
+                    """;
 
         List<Supply> supplies = new ArrayList<>();
 
@@ -169,9 +174,11 @@ public class SupplyService {
 
         validateSupply(supply);
 
-        String sql = """UPDATE Supply
+        String sql = """
+                        UPDATE Supply
                         SET supply_type = ?, location_id = ?, victim_id = ?, expiry_date = ?, allocation_date = ?, description = ?
-                        WHERE id = ?""";
+                        WHERE id = ?
+                    """;
 
         try (
             Connection connection = databaseManager.getConnection();
@@ -286,10 +293,10 @@ public class SupplyService {
     // gets supply by ID
     public Supply getSupplyById(int supplyId) {
         String sql = """
-            SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description
-            FROM Supply
-            WHERE id = ?
-            """;
+                        SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description
+                        FROM Supply
+                        WHERE id = ?
+                    """;
 
         try (
             Connection connection = databaseManager.getConnection();
