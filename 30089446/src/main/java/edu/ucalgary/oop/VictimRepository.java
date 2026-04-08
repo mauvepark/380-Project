@@ -2,10 +2,10 @@ package edu.ucalgary.oop;
 
 import java.sql.*;
 
-public class VictimService {
+public class VictimRepository {
     private final Connection dbConnect;
 
-    public VictimService(Connection dbConnect) {
+    public VictimRepository(Connection dbConnect) {
         this.dbConnect = dbConnect;
     }
 
