@@ -216,6 +216,11 @@ public class SupplyService {
             stmt.setInt(1, victimId);
             stmt.setInt(2, supplyId);
 
+            int rows = stmt.executeUpdate();
+            if (rows == 0) {
+                throw new RuntimeException("Supply allocation failed.");
+            }
+
             logger.log("UPDATED", "supply " + supplyId + " | Type: " + supply.getSupplyType() + " -> allocated to disaster victim " + victimId);
 
         } catch (SQLException e) {
