@@ -12,12 +12,13 @@ public class DatabaseManager {
     private String user;
     private String password;
 
-
+    // constructor
     private DatabaseManager() {
         loadConfig();
         createConnection();
     }
 
+    // singleton pattern
     public static DatabaseManager getInstance() {
         if (instance == null) {
             instance = new DatabaseManager();
@@ -25,6 +26,7 @@ public class DatabaseManager {
         return instance;
     }
 
+    // load databse configuration
     private void loadConfig() {
         Properties prop = new Properties();
 
@@ -44,6 +46,7 @@ public class DatabaseManager {
         }
     }
 
+    // create connection to database
     private void createConnection() {
         try {
             dbConnect = DriverManager.getConnection(this.url, this.user, this.password);
@@ -59,6 +62,7 @@ public class DatabaseManager {
         return dbConnect;
     }
 
+    // close connection to database
     public void close() {
         try {
             if (dbConnect != null && !dbConnect.isClosed()) {

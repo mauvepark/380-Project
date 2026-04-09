@@ -75,7 +75,7 @@ public class Inquiry {
     
     public String getLogDetails() {
        return "Inquirer: " + inquirer.getFirstName() + 
-           ", Missing Person: " + missingPerson.getFirstName() + 
+           ", Missing Person: " + missingPerson.getPerson().getFirstName() + 
            ", Date of Inquiry: " + dateOfInquiry + 
            ", Info Provided: " + infoProvided + 
            ", Last Known Location: " + lastKnownLocation.getName();
