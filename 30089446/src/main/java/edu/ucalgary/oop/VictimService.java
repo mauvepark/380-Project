@@ -1,8 +1,8 @@
 package edu.ucalgary.oop;
 
 import java.sql.*;
-import java.util.*;
 import java.time.LocalDate;
+import java.util.*;
 
 
 public class VictimService {
