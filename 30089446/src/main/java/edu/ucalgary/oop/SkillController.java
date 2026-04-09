@@ -391,7 +391,7 @@ public class SkillController {
         }
     }
 
-    // input helpers
+    // validation and input methods
     private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);

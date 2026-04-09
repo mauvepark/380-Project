@@ -156,7 +156,7 @@ public class LocationController {
         }
     }
 
-    // validation
+    // validate inputs
     private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);

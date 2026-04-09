@@ -1,83 +1,83 @@
-/*
-Copyright Ann Barcomb and Khawla Shnaikat, 2024-2025
-Licensed under GPL v3
-See LICENSE.txt for more information.
-*/
-
 package edu.ucalgary.oop;
-import java.time.LocalDate;
-// REMOVED: import java.time.format.DateTimeFormatter; // No longer needed
+
+import java.time.LocalDateTime;
 
 public class Inquiry {
-    private Inquirer inquirer;
-    private DisasterVictim missingPerson;
-    private LocalDate dateOfInquiry; 
-    private String infoProvided;
-    private Location lastKnownLocation;
+    private int id;
+    private Person inquirer;
+    private Person subjectPerson;
+    private LocalDateTime inquiryDate;
+    private String details;
 
-    public Inquiry(Inquirer inquirer, DisasterVictim missingPerson, LocalDate dateOfInquiry, String infoProvided, Location lastKnownLocation) {
-        this.inquirer = inquirer;
-        this.missingPerson = missingPerson;
-        setDateOfInquiry(dateOfInquiry); // This will validate the date
-        this.infoProvided = infoProvided;
-        this.lastKnownLocation = lastKnownLocation;
+    // constructors
+    public Inquiry(int id, Person inquirer, Person subjectPerson, LocalDateTime inquiryDate, String details) {
+        setId(id);
+        setInquirer(inquirer);
+        setSubjectPerson(subjectPerson);
+        setInquiryDate(inquiryDate);
+        setDetails(details);
     }
 
-    // Getter and setter for inquirer
-    public Inquirer getInquirer() {
+    public Inquiry(Person inquirer, Person subjectPerson, LocalDateTime inquiryDate, String details) {
+        setInquirer(inquirer);
+        setSubjectPerson(subjectPerson);
+        setInquiryDate(inquiryDate);
+        setDetails(details);
+    }
+
+    // getters and setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Inquiry ID cannot be negative.");
+        }
+        this.id = id;
+    }
+
+    public Person getInquirer() {
         return inquirer;
     }
 
-    public void setInquirer(Inquirer inquirer) {
+    public void setInquirer(Person inquirer) {
+        if (inquirer == null) {
+            throw new IllegalArgumentException("Inquirer cannot be null.");
+        }
         this.inquirer = inquirer;
     }
 
-    // Getter and setter for missingPerson
-    public DisasterVictim getMissingPerson() {
-        return missingPerson;
+    public Person getSubjectPerson() {
+        return subjectPerson;
     }
 
-    public void setMissingPerson(DisasterVictim missingPerson) {
-        this.missingPerson = missingPerson;
+    public void setSubjectPerson(Person subjectPerson) {
+        this.subjectPerson = subjectPerson;
     }
 
-    public LocalDate getDateOfInquiry() {
-        return dateOfInquiry;
+    public LocalDateTime getInquiryDate() {
+        return inquiryDate;
     }
 
-    public void setDateOfInquiry(LocalDate dateOfInquiry) throws IllegalArgumentException {
-        if (dateOfInquiry == null) {
-            throw new IllegalArgumentException("Date of inquiry cannot be null");
+    public void setInquiryDate(LocalDateTime inquiryDate) {
+        if (inquiryDate == null) {
+            throw new IllegalArgumentException("Inquiry date cannot be null.");
         }
-        if (dateOfInquiry.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Date of inquiry cannot be in the future");
+        if (inquiryDate.isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Inquiry date cannot be in the future.");
         }
-        this.dateOfInquiry = dateOfInquiry;
+        this.inquiryDate = inquiryDate;
     }
 
-    // Getter and setter for infoProvided
-    public String getInfoProvided() {
-        return infoProvided;
+    public String getDetails() {
+        return details;
     }
 
-    public void setInfoProvided(String infoProvided) {
-        this.infoProvided = infoProvided;
-    }
-
-    // Getter and setter for lastKnownLocation
-    public Location getLastKnownLocation() {
-        return lastKnownLocation;
-    }
-
-    public void setLastKnownLocation(Location lastKnownLocation) {
-        this.lastKnownLocation = lastKnownLocation;
-    }
-    
-    public String getLogDetails() {
-       return "Inquirer: " + inquirer.getFirstName() + 
-           ", Missing Person: " + missingPerson.getPerson().getFirstName() + 
-           ", Date of Inquiry: " + dateOfInquiry + 
-           ", Info Provided: " + infoProvided + 
-           ", Last Known Location: " + lastKnownLocation.getName();
+    public void setDetails(String details) {
+        if (details == null || details.isBlank()) {
+            throw new IllegalArgumentException("Inquiry details cannot be blank.");
+        }
+        this.details = details.trim();
     }
 }

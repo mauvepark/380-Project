@@ -10,7 +10,7 @@ public class Main {
         SupplyController supplyController = new SupplyController();
         SkillController skillController = new SkillController();
         CulturalRequirementController culturalController = new CulturalRequirementController();
-        LocationController locationController = new LocationController();
+        InquiryController inquiryController = new InquiryController();
 
         boolean running = true;
 
@@ -21,7 +21,7 @@ public class Main {
             System.out.println("2. Supply Management");
             System.out.println("3. Skill Registry");
             System.out.println("4. Cultural or Religious Requirements");
-            System.out.println("5. Location Management");
+            System.out.println("5. Inquiry Management");
             System.out.println("6. Exit");
 
             int choice = readInt(scanner, "Please choose an option (1-6): ");
@@ -40,7 +40,7 @@ public class Main {
                     culturalController.menu();
                     break;
                 case 5:
-                    locationController.menu();
+                    inquiryController.menu();
                     break;
                 case 6:
                     running = false;
