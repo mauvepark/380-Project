@@ -10,11 +10,11 @@ public class SkillController {
 
     // constructor
     public SkillController() {
-        this.service = new SkillService(new SkillRepository(DatabaseManager.getInstance().getConnection()));
+        this.service = new SkillService();
         this.victimService = new VictimService();
         this.scanner = new Scanner(System.in);
     }
-    
+
     // skill menu
     public void menu() {
         boolean running = true;

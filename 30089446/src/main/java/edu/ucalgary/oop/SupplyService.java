@@ -13,14 +13,6 @@ public class SupplyService {
         this.logger = ActionLogger.getInstance();
     }
 
-    public SupplyService(DatabaseManager databaseManager, ActionLogger logger) {
-        if (databaseManager == null || logger == null) {
-            throw new IllegalArgumentException("Dependencies cannot be null.");
-        }
-        this.databaseManager = databaseManager;
-        this.logger = logger;
-    }
-
     // loads supplies from the database
     public List<Supply> getAllSupplies() {
         String sql = "SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description FROM Supply ORDER BY id";

@@ -8,17 +8,9 @@ public class CulturalRequirementService {
     private final ActionLogger logger;
 
     // constructor
-    public CulturalRequirementService(CulturalRequirementRepository repository,
-                                      CulturalRequirementLoader loader) {
-        if (repository == null) {
-            throw new IllegalArgumentException("Repository cannot be null");
-        }
-        if (loader == null) {
-            throw new IllegalArgumentException("Loader cannot be null");
-        }
-
-        this.repository = repository;
-        this.options = loader.getOptions();
+    public CulturalRequirementService() {
+        this.repository = new CulturalRequirementRepository(DatabaseManager.getInstance().getConnection());
+        this.options = new CulturalRequirementLoader().getOptions();
         this.logger = ActionLogger.getInstance();
     }
 

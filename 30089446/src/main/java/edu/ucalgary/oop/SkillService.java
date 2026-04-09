@@ -9,12 +9,8 @@ public class SkillService {
     private final VictimRepository victimRepository;
 
     // constructor
-    public SkillService(SkillRepository repository) {
-        if (repository == null) {
-            throw new IllegalArgumentException("Repository cannot be null");
-        }
-
-        this.repository = repository;
+    public SkillService() {
+        this.repository = new SkillRepository(DatabaseManager.getInstance().getConnection());
         this.victimRepository = new VictimRepository(DatabaseManager.getInstance().getConnection());
         this.logger = ActionLogger.getInstance();
     }

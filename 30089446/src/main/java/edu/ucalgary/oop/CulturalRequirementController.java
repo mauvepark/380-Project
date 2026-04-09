@@ -9,10 +9,7 @@ public class CulturalRequirementController {
 
     // constructor
     public CulturalRequirementController() {
-        CulturalRequirementRepository repository = new CulturalRequirementRepository(DatabaseManager.getInstance().getConnection());
-        CulturalRequirementLoader loader = new CulturalRequirementLoader();
-
-        this.service = new CulturalRequirementService(repository, loader);
+        this.service = new CulturalRequirementService();
         this.victimService = new VictimService();
         this.scanner = new Scanner(System.in);
     }
