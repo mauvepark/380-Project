@@ -25,10 +25,10 @@ public class VictimRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to insert person.", e);
+            throw new RuntimeException("Could not insert person.", e);
         }
 
-        throw new RuntimeException("Failed to insert person.");
+        throw new RuntimeException("Could not insert person.");
     }
 
     // add new disaster victim
@@ -61,7 +61,7 @@ public class VictimRepository {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to insert disaster victim.", e);
+            throw new RuntimeException("Could not insert disaster victim.", e);
         }
     }
 
@@ -79,7 +79,7 @@ public class VictimRepository {
                 throw new RuntimeException("No person found with id " + personId);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to update person name.", e);
+            throw new RuntimeException("Could not update person name.", e);
         }
     }
 
@@ -107,7 +107,7 @@ public class VictimRepository {
                 throw new RuntimeException("No disaster victim found with id " + personId);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to update victim age information.", e);
+            throw new RuntimeException("Could not update victim age information.", e);
         }
     }
 
@@ -123,7 +123,7 @@ public class VictimRepository {
                 throw new RuntimeException("No disaster victim found with id " + personId);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to soft delete victim.", e);
+            throw new RuntimeException("Could not soft delete victim.", e);
         }
     }
 
@@ -163,7 +163,7 @@ public class VictimRepository {
                 dbConnect.setAutoCommit(true);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to hard delete victim.", e);
+            throw new RuntimeException("Could not hard delete victim.", e);
         }
     }
 
@@ -175,7 +175,21 @@ public class VictimRepository {
             PreparedStatement stmt = dbConnect.prepareStatement(query);
             return stmt.executeQuery();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get active victims.", e);
+            throw new RuntimeException("Could not get active victims.", e);
+        }
+    }
+
+    public boolean isActiveVictim(int personId) {
+        String query = "SELECT 1 FROM DisasterVictim WHERE person_id = ? AND is_soft_deleted = FALSE";
+
+        try (PreparedStatement stmt = dbConnect.prepareStatement(query)) {
+            stmt.setInt(1, personId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not check victim status.", e);
         }
     }
 }
