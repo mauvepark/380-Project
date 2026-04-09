@@ -5,11 +5,13 @@ import java.util.*;
 
 public class VictimController {
     private final VictimService service;
+    private final MedicalRecordService medicalRecordService;
     private final Scanner scanner;
 
     // constructor
     public VictimController() {
         this.service = new VictimService();
+        this.medicalRecordService = new MedicalRecordService();
         this.scanner = new Scanner(System.in);
     }
 
@@ -19,16 +21,17 @@ public class VictimController {
 
         while (running) {
             System.out.println();
-            System.out.println ("----------- Victim Management Menu -----------");
+            System.out.println("----------- Victim Management Menu -----------");
             System.out.println("1. View active victims");
             System.out.println("2. Add a victim");
             System.out.println("3. Update victim name");
             System.out.println("4. Update victim age");
-            System.out.println("5. Soft delete victim");
-            System.out.println("6. Hard delete victim");
-            System.out.println("7. Back");
+            System.out.println("5. Manage victim medical records");
+            System.out.println("6. Soft delete victim");
+            System.out.println("7. Hard delete victim");
+            System.out.println("8. Back");
 
-            int choice = readInt("Please choose an option (1-7): ");
+            int choice = readInt("Please choose an option (1-8): ");
 
             try {
                 switch (choice) {
@@ -45,16 +48,19 @@ public class VictimController {
                         updateVictimAgeInfo();
                         break;
                     case 5:
-                        softDeleteVictim();
+                        manageVictimMedicalRecords();
                         break;
                     case 6:
-                        hardDeleteVictim();
+                        softDeleteVictim();
                         break;
                     case 7:
+                        hardDeleteVictim();
+                        break;
+                    case 8:
                         running = false;
                         break;
                     default:
-                        System.out.println("Invalid option. Please choose 1-7.");
+                        System.out.println("Invalid option. Please choose 1-8.");
                 }
             } catch (IllegalArgumentException | IllegalStateException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -182,6 +188,166 @@ public class VictimController {
         }
     }
 
+    // medical record submenu
+    public void manageVictimMedicalRecords() {
+        System.out.println();
+        System.out.println("----------- Manage Victim Medical Records -----------");
+
+        DisasterVictim victim = selectVictim();
+        if (victim == null) {
+            return;
+        }
+
+        boolean running = true;
+
+        while (running) {
+            System.out.println();
+            System.out.println("Selected victim:");
+            printVictimSummary(victim);
+            System.out.println();
+            System.out.println("1. View medical records");
+            System.out.println("2. Add medical record");
+            System.out.println("3. Update medical record");
+            System.out.println("4. Delete medical record");
+            System.out.println("5. Back");
+
+            int choice = readInt("Please choose an option (1-5): ");
+
+            switch (choice) {
+                case 1:
+                    viewMedicalRecordsForVictim(victim);
+                    break;
+                case 2:
+                    addMedicalRecordForVictim(victim);
+                    break;
+                case 3:
+                    updateMedicalRecordForVictim(victim);
+                    break;
+                case 4:
+                    deleteMedicalRecordForVictim(victim);
+                    break;
+                case 5:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid option. Please choose 1-5.");
+            }
+        }
+    }
+
+    private void viewMedicalRecordsForVictim(DisasterVictim victim) {
+        System.out.println();
+        System.out.println("----------- Victim Medical Records -----------");
+
+        List<MedicalRecord> records = medicalRecordService.getMedicalRecordsForVictim(victim.getPersonId());
+
+        if (records.isEmpty()) {
+            System.out.println("This victim has no medical records.");
+            return;
+        }
+
+        for (MedicalRecord record : records) {
+            printMedicalRecordSummary(record);
+        }
+    }
+
+    private void addMedicalRecordForVictim(DisasterVictim victim) {
+        System.out.println();
+        System.out.println("----------- Add Medical Record -----------");
+
+        String treatmentDetails = readRequiredString("Treatment details: ");
+        LocalDate treatmentDate = readDate("Treatment date (format: YYYY-MM-DD): ");
+        Integer locationId = readOptionalInt("Location ID (press enter to leave blank): ");
+
+        MedicalRecord record = medicalRecordService.addMedicalRecord(
+            victim.getPersonId(),
+            treatmentDetails,
+            treatmentDate,
+            locationId
+        );
+
+        System.out.println("Medical record added successfully.");
+        printMedicalRecordSummary(record);
+    }
+
+    private void updateMedicalRecordForVictim(DisasterVictim victim) {
+        System.out.println();
+        System.out.println("----------- Update Medical Record -----------");
+
+        List<MedicalRecord> records = medicalRecordService.getMedicalRecordsForVictim(victim.getPersonId());
+
+        if (records.isEmpty()) {
+            System.out.println("This victim has no medical records.");
+            return;
+        }
+
+        for (MedicalRecord record : records) {
+            printMedicalRecordSummary(record);
+        }
+
+        int recordId = readInt("Please enter medical record ID: ");
+
+        MedicalRecord selected = null;
+        for (MedicalRecord record : records) {
+            if (record.getId() == recordId) {
+                selected = record;
+                break;
+            }
+        }
+
+        if (selected == null) {
+            System.out.println("No medical record found with that ID.");
+            return;
+        }
+
+        String newTreatmentDetails = readRequiredString("New treatment details: ");
+        LocalDate newTreatmentDate = readDate("New treatment date (format: YYYY-MM-DD): ");
+        Integer newLocationId = readOptionalInt("New location ID (press enter to leave blank): ");
+
+        medicalRecordService.updateMedicalRecord(selected, newTreatmentDetails, newTreatmentDate, newLocationId);
+
+        System.out.println("Medical record updated successfully.");
+    }
+
+    private void deleteMedicalRecordForVictim(DisasterVictim victim) {
+        System.out.println();
+        System.out.println("----------- Delete Medical Record -----------");
+
+        List<MedicalRecord> records = medicalRecordService.getMedicalRecordsForVictim(victim.getPersonId());
+
+        if (records.isEmpty()) {
+            System.out.println("This victim has no medical records.");
+            return;
+        }
+
+        for (MedicalRecord record : records) {
+            printMedicalRecordSummary(record);
+        }
+
+        int recordId = readInt("Please enter medical record ID: ");
+
+        MedicalRecord selected = null;
+        for (MedicalRecord record : records) {
+            if (record.getId() == recordId) {
+                selected = record;
+                break;
+            }
+        }
+
+        if (selected == null) {
+            System.out.println("No medical record found with that ID.");
+            return;
+        }
+
+        if (!confirm("Are you sure you want to delete this medical record? (Y/N): ")) {
+            System.out.println("Medical record deletion cancelled.");
+            return;
+        }
+
+        medicalRecordService.deleteMedicalRecord(selected);
+        System.out.println("Medical record deleted successfully.");
+    }
+
     // soft delete victim
     public void softDeleteVictim() {
         System.out.println();
@@ -262,7 +428,16 @@ public class VictimController {
         }
 
         System.out.println("ID: " + victim.getPersonId() + " | Name: " + victim.getPerson().getFirstName() + " " + lastName
-                            + " | " + ageInfo + " | Gender: " + victim.getGender() + " | Entry Date: " + victim.getEntryDate());
+                + " | " + ageInfo + " | Gender: " + victim.getGender() + " | Entry Date: " + victim.getEntryDate());
+    }
+
+    private void printMedicalRecordSummary(MedicalRecord record) {
+        String locationInfo = record.getLocationId() == null ? "None" : String.valueOf(record.getLocationId());
+
+        System.out.println("ID: " + record.getId() + " | Victim ID: " + record.getVictimId()
+                + " | Treatment Date: " + record.getTreatmentDate()
+                + " | Location ID: " + locationInfo
+                + " | Details: " + record.getTreatmentDetails());
     }
 
     // validate inputs

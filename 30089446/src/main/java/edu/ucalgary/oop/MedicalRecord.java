@@ -1,61 +1,83 @@
-/*
-Copyright Ann Barcomb and Khawla Shnaikat, 2024-2025
-Licensed under GPL v3
-See LICENSE.txt for more information.
-*/
-
 package edu.ucalgary.oop;
 
 import java.time.LocalDate;
 
 public class MedicalRecord {
-    private Location location;
+    private int id;
+    private int victimId;
     private String treatmentDetails;
-    private LocalDate dateOfTreatment; 
+    private LocalDate treatmentDate;
+    private Integer locationId;
 
-    public MedicalRecord(Location location, String treatmentDetails, LocalDate dateOfTreatment) throws IllegalArgumentException {
-        setLocation(location);
-        this.treatmentDetails = treatmentDetails;
-        
-        if (dateOfTreatment == null) {
-            throw new IllegalArgumentException("Date of treatment cannot be null");
+    // constructors
+    public MedicalRecord(int id, int victimId, String treatmentDetails, LocalDate treatmentDate, Integer locationId) {
+        setId(id);
+        setVictimId(victimId);
+        setTreatmentDetails(treatmentDetails);
+        setTreatmentDate(treatmentDate);
+        setLocationId(locationId);
+    }
+
+    public MedicalRecord(int victimId, String treatmentDetails, LocalDate treatmentDate, Integer locationId) {
+        setVictimId(victimId);
+        setTreatmentDetails(treatmentDetails);
+        setTreatmentDate(treatmentDate);
+        setLocationId(locationId);
+    }
+
+    // getters and setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Medical record ID cannot be negative.");
         }
-        if (dateOfTreatment.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Date of treatment cannot be in the future");
+        this.id = id;
+    }
+
+    public int getVictimId() {
+        return victimId;
+    }
+
+    public void setVictimId(int victimId) {
+        if (victimId <= 0) {
+            throw new IllegalArgumentException("Victim ID must be positive.");
         }
-        this.dateOfTreatment = dateOfTreatment;
+        this.victimId = victimId;
     }
 
-    // Getter and setter for location
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    // Getter for treatmentDetails
     public String getTreatmentDetails() {
         return treatmentDetails;
     }
 
-    // Setter for treatmentDetails
-    public void setTreatmentDetails(String treatmentDetails) throws IllegalArgumentException {
-        this.treatmentDetails = treatmentDetails;
+    public void setTreatmentDetails(String treatmentDetails) {
+        if (treatmentDetails == null || treatmentDetails.trim().isEmpty()) {
+            throw new IllegalArgumentException("Treatment details cannot be null or blank.");
+        }
+        this.treatmentDetails = treatmentDetails.trim();
     }
 
-    public LocalDate getDateOfTreatment() {
-        return dateOfTreatment;
+    public LocalDate getTreatmentDate() {
+        return treatmentDate;
     }
 
-    public void setDateOfTreatment(LocalDate dateOfTreatment) throws IllegalArgumentException {
-        if (dateOfTreatment == null) {
-            throw new IllegalArgumentException("Date of treatment cannot be null");
+    public void setTreatmentDate(LocalDate treatmentDate) {
+        if (treatmentDate == null) {
+            throw new IllegalArgumentException("Treatment date cannot be null.");
         }
-        if (dateOfTreatment.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Date of treatment cannot be in the future");
+        if (treatmentDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Treatment date cannot be in the future.");
         }
-        this.dateOfTreatment = dateOfTreatment;
+        this.treatmentDate = treatmentDate;
+    }
+
+    public Integer getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Integer locationId) {
+        this.locationId = locationId;
     }
 }
