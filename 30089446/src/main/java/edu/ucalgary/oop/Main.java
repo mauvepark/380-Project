@@ -2,6 +2,15 @@ package edu.ucalgary.oop;
 
 import java.util.Scanner;
 
+/**
+ * This class serves as the entry point for the application, providing a menu-driven interface for users to manage victims,
+ * supplies, skills, cultural requirements, inquiries, and family relationships. It initializes the necessary controllers and
+ * handles user input to navigate through the different management options.
+ *
+ * @author Noor Ali
+ * @version 1.0
+ * @since 2026-04-09
+ */
 public class Main {
 
   public static void main(String[] args) {

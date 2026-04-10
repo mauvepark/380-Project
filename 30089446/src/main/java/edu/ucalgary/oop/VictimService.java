@@ -34,19 +34,12 @@ public class VictimService {
 
         repository.insertDisasterVictim(personId,dateOfBirth,approximateAge, gender, entryDate, locationId);
 
-        Person savedPerson = new Person(personId, person.getFirstName(),person.getLastName(), person.getComments()
-        );
-
         DisasterVictim victim;
-        if (dateOfBirth != null) {
-            victim = new DisasterVictim(savedPerson, entryDate, dateOfBirth);
-        } else {
-            victim = new DisasterVictim(savedPerson, entryDate, approximateAge);
-        }
-
-        if (gender != null && !gender.isBlank()) {
-            victim.setGender(gender);
-        }
+            if (dateOfBirth != null) {
+                victim = new DisasterVictim(personId, person.getFirstName(), person.getLastName(), person.getComments(), entryDate, dateOfBirth);
+            } else {
+                victim = new DisasterVictim( personId, person.getFirstName(), person.getLastName(), person.getComments(), entryDate, approximateAge);
+            }
 
         logger.log("ADDED", "disaster victim " + personId + " | Name: " + person.getFirstName() + " " + person.getLastName());
 
@@ -63,12 +56,12 @@ public class VictimService {
         }
 
         // last name can be blank, but not null
-        String oldName = victim.getPerson().getFirstName() + " " + victim.getPerson().getLastName();
+        String oldName = victim.getFirstName() + " " + victim.getLastName();
 
         repository.updateVictimName(victim.getPersonId(), newFirstName, newLastName);
 
-        victim.getPerson().setFirstName(newFirstName);
-        victim.getPerson().setLastName(newLastName);
+        victim.setFirstName(newFirstName);
+        victim.setLastName(newLastName);
 
         logger.log("UPDATED", "disaster victim " + victim.getPersonId() + " | Name: " + oldName + " -> " + newFirstName + " " + newLastName);
     }
@@ -105,7 +98,7 @@ public class VictimService {
 
         repository.softDeleteVictim(victim.getPersonId());
 
-        logger.log("SOFT DELETED", "disaster victim " + victim.getPersonId() + " | Name: " + victim.getPerson().getFirstName() + " " + victim.getPerson().getLastName());
+        logger.log("SOFT DELETED", "disaster victim " + victim.getPersonId() + " | Name: " + victim.getFirstName() + " " + victim.getLastName());
     }
 
     // hard delete
@@ -116,7 +109,7 @@ public class VictimService {
 
         repository.hardDeleteVictim(victim.getPersonId());
 
-        logger.log("DELETED", "disaster victim " + victim.getPersonId() + " | Name: " + victim.getPerson().getFirstName() + " " + victim.getPerson().getLastName());
+        logger.log("DELETED", "disaster victim " + victim.getPersonId() + " | Name: " + victim.getFirstName() + " " + victim.getLastName());
     }
 
     // get all active victims from the database
@@ -135,14 +128,12 @@ public class VictimService {
                 String gender = rs.getString("gender");
                 LocalDate entryDate = rs.getDate("entry_date") != null ? rs.getDate("entry_date").toLocalDate() : null;
 
-                Person person = new Person(personId, firstName, lastName, comments);
-
                 DisasterVictim victim;
-                if (dob != null) {
-                    victim = new DisasterVictim(person, entryDate, dob);
-                } else {
-                    victim = new DisasterVictim(person, entryDate, approximateAge);
-                }
+                    if (dob != null) {
+                        victim = new DisasterVictim(personId, firstName, lastName, comments, entryDate, dob);
+                    } else {
+                        victim = new DisasterVictim(personId, firstName, lastName, comments, entryDate, approximateAge);
+                    }
 
                 if (gender != null && !gender.isBlank()) {
                     victim.setGender(gender);

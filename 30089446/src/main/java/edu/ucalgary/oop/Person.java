@@ -1,10 +1,16 @@
 package edu.ucalgary.oop;
 
 public class Person {
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String comments;
+    protected int id;
+    protected String firstName;
+    protected String lastName;
+    protected String comments;
+
+    public Person(String firstName, String lastName, String comments) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.comments = comments;
+    }
 
     public Person(int id, String firstName, String lastName, String comments) {
         this.id = id;
@@ -15,6 +21,10 @@ public class Person {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     public String getFirstName() {
         return firstName;

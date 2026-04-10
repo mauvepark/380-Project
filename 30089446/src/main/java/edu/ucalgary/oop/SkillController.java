@@ -92,7 +92,7 @@ public class SkillController {
 
         String category = chooseCategory();
         String skillName;
-        String details = null;
+        String details;
         String languageCapabilities = null;
         LocalDate certificationExpiry = null;
         String proficiencyLevel = chooseProficiencyLevel();
@@ -216,12 +216,12 @@ public class SkillController {
             ageInfo = "Approximate age: " + victim.getApproximateAge();
         }
 
-        String lastName = victim.getPerson().getLastName();
+        String lastName = victim.getLastName();
         if (lastName == null) {
             lastName = "";
         }
 
-        System.out.println("ID: " + victim.getPersonId() + " | Name: " + victim.getPerson().getFirstName() + " " + lastName
+        System.out.println("ID: " + victim.getPersonId() + " | Name: " + victim.getFirstName() + " " + lastName
                             + " | " + ageInfo + " | Gender: " + victim.getGender() + " | Entry Date: " + victim.getEntryDate());
     }
 
