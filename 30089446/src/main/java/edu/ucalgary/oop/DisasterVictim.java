@@ -10,6 +10,7 @@ public class DisasterVictim extends Person {
     private Supply[] personalBelongings;
     private final LocalDate ENTRY_DATE;
     private String gender;
+    private Location location;
 
     public DisasterVictim(int id, String firstName, String lastName, String comments,
                           LocalDate entryDate, LocalDate dateOfBirth) {
@@ -152,6 +153,14 @@ public class DisasterVictim extends Person {
         this.approximateAge = approximateAge;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public void addPersonalBelonging(Supply supply) {
         if (supply == null) {
             throw new IllegalArgumentException("Supply cannot be null");
@@ -192,21 +201,38 @@ public class DisasterVictim extends Person {
         this.personalBelongings = updated;
     }
 
-    public void removeFamilyConnection(FamilyRelation exRelation) {
-        if (exRelation == null) {
+    public void removeFamilyConnection(FamilyRelation relation) {
+        if (relation == null) {
             throw new IllegalArgumentException("Family relation to remove cannot be null");
         }
 
+        removeFamilyConnectionInternal(relation);
+
+        DisasterVictim other;
+        if (relation.getPersonOne() == this) {
+            other = (DisasterVictim) relation.getPersonTwo();
+        } else if (relation.getPersonTwo() == this) {
+            other = (DisasterVictim) relation.getPersonOne();
+        } else {
+            throw new IllegalArgumentException("This victim is not part of the family relation");
+        }
+
+        if (other != null) {
+            other.removeFamilyConnectionInternal(relation);
+        }
+    }
+
+    private void removeFamilyConnectionInternal(FamilyRelation relation) {
         int index = -1;
         for (int i = 0; i < familyConnections.length; i++) {
-            if (familyConnections[i].equals(exRelation)) {
+            if (familyConnections[i].equals(relation)) {
                 index = i;
                 break;
             }
         }
 
         if (index == -1) {
-            throw new IllegalArgumentException("Family relation not found");
+            return;
         }
 
         FamilyRelation[] updated = new FamilyRelation[familyConnections.length - 1];
@@ -224,6 +250,29 @@ public class DisasterVictim extends Person {
     public void addFamilyConnection(FamilyRelation relation) {
         if (relation == null) {
             throw new IllegalArgumentException("Family relation cannot be null");
+        }
+
+        addFamilyConnectionInternal(relation);
+
+        DisasterVictim other;
+        if (relation.getPersonOne() == this) {
+            other = (DisasterVictim) relation.getPersonTwo();
+        } else if (relation.getPersonTwo() == this) {
+            other = (DisasterVictim) relation.getPersonOne();
+        } else {
+            throw new IllegalArgumentException("This victim is not part of the family relation");
+        }
+
+        if (other != null) {
+            other.addFamilyConnectionInternal(relation);
+        }
+    }
+
+    private void addFamilyConnectionInternal(FamilyRelation relation) {
+        for (FamilyRelation existing : familyConnections) {
+            if (existing.equals(relation)) {
+                return;
+            }
         }
 
         FamilyRelation[] updated = new FamilyRelation[familyConnections.length + 1];

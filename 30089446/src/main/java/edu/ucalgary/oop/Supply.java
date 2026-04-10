@@ -10,6 +10,7 @@ public class Supply {
     private LocalDate expiryDate;
     private LocalDate allocationDate;
     private String description;
+    private Location location;
 
     // constructors
     public Supply(int id, String supplyType, Integer locationId, Integer victimId, 
@@ -35,6 +36,13 @@ public class Supply {
     }
 
     // getters and setters
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
     public int getId() {
         return id;
     }

@@ -8,13 +8,20 @@ public class FamilyRelation {
 
     // constructors
     public FamilyRelation(int id, Person personOne, String relationshipType, Person personTwo) {
+        if (personOne == personTwo) {
+            throw new IllegalArgumentException("A victim cannot have a family relation with themselves");
+        }
         setId(id);
         setPersonOne(personOne);
         setRelationshipType(relationshipType);
         setPersonTwo(personTwo);
+
     }
 
     public FamilyRelation(Person personOne, String relationshipType, Person personTwo) {
+        if (personOne == personTwo) {
+            throw new IllegalArgumentException("A victim cannot have a family relation with themselves");
+        }
         setPersonOne(personOne);
         setRelationshipType(relationshipType);
         setPersonTwo(personTwo);
@@ -40,6 +47,10 @@ public class FamilyRelation {
         if (personOne == null) {
             throw new IllegalArgumentException("Person one cannot be null.");
         }
+
+        if (personOne == personTwo) {
+            throw new IllegalArgumentException("A victim cannot have a family relation with themselves");
+        }
         this.personOne = personOne;
     }
 
@@ -61,6 +72,9 @@ public class FamilyRelation {
     public void setPersonTwo(Person personTwo) {
         if (personTwo == null) {
             throw new IllegalArgumentException("Person two cannot be null.");
+        }
+        if (personOne == personTwo) {
+            throw new IllegalArgumentException("A victim cannot have a family relation with themselves");
         }
         this.personTwo = personTwo;
     }

@@ -83,6 +83,8 @@ public class Location {
         System.arraycopy(occupants, 0, newOccupants, 0, occupants.length);
         newOccupants[occupants.length] = occupant;
         this.occupants = newOccupants;
+
+        occupant.setLocation(this);
     }
 
     // remove occupant from location
@@ -110,6 +112,11 @@ public class Location {
         System.arraycopy(occupants, index + 1, newOccupants, index, occupants.length - index - 1);
 
         this.occupants = newOccupants;
+
+        if (occupant.getLocation() == this) {
+            occupant.setLocation(null);
+        }
+
     }
 
     // add supply to location
@@ -122,6 +129,8 @@ public class Location {
         System.arraycopy(supplies, 0, newSupplies, 0, supplies.length);
         newSupplies[supplies.length] = supply;
         this.supplies = newSupplies;
+
+        supply.setLocation(this); // 👈 IMPORTANT
     }
 
     // remove supply from location
@@ -149,5 +158,9 @@ public class Location {
         System.arraycopy(supplies, index + 1, newSupplies, index, supplies.length - index - 1);
         
         this.supplies = newSupplies;
+        
+        if (supply.getLocation() == this) {
+            supply.setLocation(null);
+        }
     }
 }
