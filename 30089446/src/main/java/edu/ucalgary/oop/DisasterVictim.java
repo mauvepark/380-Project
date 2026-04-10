@@ -290,6 +290,8 @@ public class DisasterVictim extends Person {
         System.arraycopy(medicalRecords, 0, updated, 0, medicalRecords.length);
         updated[medicalRecords.length] = record;
         this.medicalRecords = updated;
+
+        record.setVictim(this);
     }
 
     public LocalDate getEntryDate() {

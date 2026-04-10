@@ -8,6 +8,7 @@ public class MedicalRecord {
     private String treatmentDetails;
     private LocalDate treatmentDate;
     private Integer locationId;
+    private DisasterVictim victim;
 
     // constructors
     public MedicalRecord(int id, int victimId, String treatmentDetails, LocalDate treatmentDate, Integer locationId) {
@@ -26,6 +27,13 @@ public class MedicalRecord {
     }
 
     // getters and setters
+    public DisasterVictim getVictim() {
+        return victim;
+    }
+
+    public void setVictim(DisasterVictim victim) {
+        this.victim = victim;
+    }
     public int getId() {
         return id;
     }
