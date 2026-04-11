@@ -9,7 +9,7 @@ import java.util.Scanner;
  *
  * @author Noor Ali
  * @version 1.0
- * @since 2026-04-09
+ * @since 2026-04-06
  */
 public class Main {
 
@@ -19,11 +19,10 @@ public class Main {
     VictimController victimController = new VictimController();
     SupplyController supplyController = new SupplyController();
     SkillController skillController = new SkillController();
-    CulturalRequirementController culturalController =
-      new CulturalRequirementController();
+    CulturalRequirementController culturalController = new CulturalRequirementController();
     InquiryController inquiryController = new InquiryController();
-    FamilyRelationController familyRelationController =
-      new FamilyRelationController();
+    FamilyRelationController familyRelationController = new FamilyRelationController();
+    LocationController locationController = new LocationController();
 
     boolean running = true;
 
@@ -38,7 +37,8 @@ public class Main {
       System.out.println("4. Cultural or Religious Requirements");
       System.out.println("5. Inquiry Management");
       System.out.println("6. Family Relationship Management");
-      System.out.println("7. Exit");
+      System.out.println("7. Location Management");
+      System.out.println("8. Exit");
 
       int choice = readInt(scanner, "Please choose an option (1-7): ");
 
@@ -62,10 +62,13 @@ public class Main {
           familyRelationController.menu();
           break;
         case 7:
+          locationController.menu();
+          break;
+        case 8:
           running = false;
           break;
         default:
-          System.out.println("Invalid option. Please choose 1-7.");
+          System.out.println("Invalid option. Please choose 1-8.");
       }
     }
 
