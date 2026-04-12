@@ -101,7 +101,8 @@ public class MedicalRecordRepository {
         String query = """
                         SELECT id, victim_id, treatment_details, treatment_date, location_id
                         FROM MedicalRecord
-                        WHERE victim_id = ?
+                        JOIN DisasterVictim dv ON mr.victim_id = dv.person_id
+                        WHERE victim_id = ? WHERE mr.victim_id = ? AND dv.is_soft_deleted = FALSE
                         ORDER BY treatment_date DESC, id
                        """;
 

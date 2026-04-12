@@ -15,6 +15,12 @@ public class SkillService {
         this.logger = ActionLogger.getInstance();
     }
 
+    public SkillService(SkillRepository repository, ActionLogger logger, VictimRepository victimRepository) {
+        this.repository = repository;
+        this.logger = logger;
+        this.victimRepository = victimRepository;
+    }
+
     // getters and setters
     public List<Skill> getAllSkills() {
         return repository.getAllSkills();

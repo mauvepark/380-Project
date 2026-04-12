@@ -95,9 +95,14 @@ public class CulturalRequirementRepository {
 
   // getters
   public List<CulturalRequirement> getRequirementsForVictim(int victimId) {
-    String query =
-      "SELECT victim_id, requirement_category, requirement_option FROM CulturalRequirement WHERE victim_id = ? ORDER BY requirement_category";
-
+    String query = """
+                      SELECT cr.victim_id, cr.requirement_category, cr.requirement_option
+                      FROM CulturalRequirement
+                      JOIN DisasterVictim dv ON cr.victim_id = dv.person_id
+                      WHERE cr.victim_id = ? AND dv.is_soft_deleted = FALSE
+                      ORDER BY cr.requirement_category
+                  """;
+                  
     List<CulturalRequirement> requirements = new ArrayList<>();
 
     try (PreparedStatement stmt = dbConnect.prepareStatement(query)) {

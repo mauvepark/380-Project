@@ -13,6 +13,11 @@ public class SupplyService {
         this.logger = ActionLogger.getInstance();
     }
 
+    public SupplyService(DatabaseManager databaseManager, ActionLogger logger) {
+        this.databaseManager = databaseManager;
+        this.logger = logger;
+    }
+
     // loads supplies from the database
     public List<Supply> getAllSupplies() {
         String sql = """

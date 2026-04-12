@@ -13,6 +13,11 @@ public class LocationService {
         this.logger = ActionLogger.getInstance();
     }
 
+    public LocationService(LocationRepository repository, ActionLogger logger) {
+        this.repository = repository;
+        this.logger = logger;
+    }
+
     // add a new location
     public Location addLocation(String name, String address) {
         validateNameAndAddress(name, address);

@@ -15,6 +15,11 @@ public class VictimService {
         this.logger = ActionLogger.getInstance();
     }
 
+    public VictimService(VictimRepository repository, ActionLogger logger) {
+        this.repository = repository;
+        this.logger = logger;
+    }
+
     // add a new victim to the database
     public DisasterVictim addVictim(Person person, LocalDate entryDate, LocalDate dateOfBirth, Integer approximateAge, String gender, String customGender, Integer locationId) {
         if (person == null) {

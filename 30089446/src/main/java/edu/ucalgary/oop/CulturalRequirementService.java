@@ -7,11 +7,18 @@ public class CulturalRequirementService {
     private final Map<String, Set<String>> options;
     private final ActionLogger logger;
 
-    // constructor
     public CulturalRequirementService() {
-        this.repository = new CulturalRequirementRepository(DatabaseManager.getInstance().getConnection());
-        this.options = new CulturalRequirementLoader().getAccomodations();
-        this.logger = ActionLogger.getInstance();
+        this(
+            new CulturalRequirementRepository(DatabaseManager.getInstance().getConnection()),
+            new CulturalRequirementLoader().getAccomodations(),
+            ActionLogger.getInstance()
+        );
+    }
+
+    public CulturalRequirementService(CulturalRequirementRepository repository, Map<String, Set<String>> options, ActionLogger logger) {
+        this.repository = repository;
+        this.options = options;
+        this.logger = logger;
     }
 
     // getters

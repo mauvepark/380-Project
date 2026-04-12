@@ -133,6 +133,9 @@ public class VictimRepository {
         String deleteRelationships = "DELETE FROM FamilyRelationship WHERE person_one_id = ? OR person_two_id = ?";
         String deleteAllocatedSupplies = "DELETE FROM Supply WHERE victim_id = ?";
         String deletePerson = "DELETE FROM Person WHERE id = ?";
+        String deleteMedicalRecords = "DELETE FROM MedicalRecord WHERE victim_id = ?";
+        String deleteVictimSkill = "DELETE FROM VictimSkill WHERE victim_id = ?";
+        String deleteCulturalRequirements = "DELETE FROM CulturalRequirement WHERE victim_id = ?";
 
         try {
             dbConnect.setAutoCommit(false);
@@ -140,7 +143,10 @@ public class VictimRepository {
             try (PreparedStatement stmt1 = dbConnect.prepareStatement(deleteInquiry);
                 PreparedStatement stmt2 = dbConnect.prepareStatement(deleteRelationships);
                 PreparedStatement stmt3 = dbConnect.prepareStatement(deleteAllocatedSupplies);
-                PreparedStatement stmt4 = dbConnect.prepareStatement(deletePerson)) {
+                PreparedStatement stmt4 = dbConnect.prepareStatement(deletePerson);
+                PreparedStatement stmt5 = dbConnect.prepareStatement(deleteMedicalRecords);
+                PreparedStatement stmt6 = dbConnect.prepareStatement(deleteVictimSkill);
+                PreparedStatement stmt7 = dbConnect.prepareStatement(deleteCulturalRequirements)) {
 
                 // delete inquiries
                 stmt1.setInt(1, personId);
@@ -155,6 +161,18 @@ public class VictimRepository {
                 // delete supplies 
                 stmt3.setInt(1, personId);
                 stmt3.executeUpdate();
+
+                // delete medical records
+                stmt5.setInt(1, personId);
+                stmt5.executeUpdate();
+
+                // delete victim skills
+                stmt6.setInt(1, personId);
+                stmt6.executeUpdate();
+
+                // delete cultural requirements
+                stmt7.setInt(1, personId);
+                stmt7.executeUpdate();
 
                 // delete person record
                 stmt4.setInt(1, personId);

@@ -16,6 +16,11 @@ public class FamilyRelationService {
     this.logger = ActionLogger.getInstance();
   }
 
+  public FamilyRelationService(FamilyRelationRepository repository, ActionLogger logger) {
+    this.repository = repository;
+    this.logger = logger;
+  }
+
   // add a new family relation
   public FamilyRelation addFamilyRelation(
     Person personOne,

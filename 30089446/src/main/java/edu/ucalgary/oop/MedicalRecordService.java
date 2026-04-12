@@ -19,6 +19,13 @@ public class MedicalRecordService {
         this.locationRepository = new LocationRepository(connection);
     }
 
+    public MedicalRecordService(MedicalRecordRepository repository, ActionLogger logger, VictimRepository victimRepository, LocationRepository locationRepository) {
+        this.repository = repository;
+        this.logger = logger;
+        this.victimRepository = victimRepository;
+        this.locationRepository = locationRepository;
+    }
+
     // add a new medical record
     public MedicalRecord addMedicalRecord(int victimId, String treatmentDetails, LocalDate treatmentDate, Integer locationId) {
         validateVictimId(victimId);

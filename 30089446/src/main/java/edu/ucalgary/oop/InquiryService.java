@@ -17,6 +17,11 @@ public class InquiryService {
         this.logger = ActionLogger.getInstance();
     }
 
+    public InquiryService(InquiryRepository repository, ActionLogger logger) {
+        this.repository = repository;
+        this.logger = logger;
+    }
+
     // add a new inquiry
     public Inquiry addInquiry(Person inquirer, Person subjectPerson, LocalDateTime inquiryDate, String details) {
         if (inquirer == null) {
