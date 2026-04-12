@@ -16,13 +16,13 @@ public class Main {
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
 
-    VictimController victimController = new VictimController();
-    SupplyController supplyController = new SupplyController();
-    SkillController skillController = new SkillController();
-    CulturalRequirementController culturalController = new CulturalRequirementController();
-    InquiryController inquiryController = new InquiryController();
-    FamilyRelationController familyRelationController = new FamilyRelationController();
-    LocationController locationController = new LocationController();
+    VictimController victimController = new VictimController(scanner);
+    SupplyController supplyController = new SupplyController(scanner);
+    SkillController skillController = new SkillController(scanner);
+    CulturalRequirementController culturalController = new CulturalRequirementController(scanner);
+    InquiryController inquiryController = new InquiryController(scanner);
+    FamilyRelationController familyRelationController = new FamilyRelationController(scanner);
+    LocationController locationController = new LocationController(scanner);
 
     boolean running = true;
 

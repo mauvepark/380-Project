@@ -8,9 +8,9 @@ public class SupplyController {
     private final Scanner scanner;
 
     // constructor
-    public SupplyController() {
+    public SupplyController(Scanner scanner) {
         this.service = new SupplyService();
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
     }
 
     // supply menu

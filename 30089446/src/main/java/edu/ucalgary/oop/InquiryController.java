@@ -9,9 +9,9 @@ public class InquiryController {
     private final Scanner scanner;
 
     // constructor
-    public InquiryController() {
+    public InquiryController(Scanner scanner) {
         this.service = new InquiryService();
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
     }
 
     // inquiry menu

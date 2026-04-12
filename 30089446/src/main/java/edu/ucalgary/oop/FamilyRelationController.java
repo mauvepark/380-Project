@@ -8,9 +8,9 @@ public class FamilyRelationController {
     private final Scanner scanner;
 
     // constructor
-    public FamilyRelationController() {
+    public FamilyRelationController(Scanner scanner) {
         this.service = new FamilyRelationService();
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
     }
 
     // family relationships menu

@@ -8,10 +8,10 @@ public class CulturalRequirementController {
     private final Scanner scanner;
 
     // constructor
-    public CulturalRequirementController() {
+    public CulturalRequirementController(Scanner scanner) {
         this.service = new CulturalRequirementService();
         this.victimService = new VictimService();
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
     }
 
     // menu

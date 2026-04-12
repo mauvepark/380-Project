@@ -10,11 +10,11 @@ public class VictimController {
     private final CulturalRequirementController culturalController;
 
     // constructor
-    public VictimController() {
+    public VictimController(Scanner scanner) {
         this.service = new VictimService();
         this.medicalRecordService = new MedicalRecordService();
-        this.scanner = new Scanner(System.in);
-        this.culturalController = new CulturalRequirementController();
+        this.scanner = scanner;
+        this.culturalController = new CulturalRequirementController(scanner);
     }
 
     // victim menu

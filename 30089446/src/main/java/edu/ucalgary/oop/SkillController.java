@@ -9,10 +9,10 @@ public class SkillController {
     private final Scanner scanner;
 
     // constructor
-    public SkillController() {
+    public SkillController(Scanner scanner) {
         this.service = new SkillService();
         this.victimService = new VictimService();
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
     }
 
     // skill menu

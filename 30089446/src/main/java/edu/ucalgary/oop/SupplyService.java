@@ -24,8 +24,9 @@ public class SupplyService {
                      """;
         List<Supply> supplies = new ArrayList<>();
 
+        Connection connection = databaseManager.getConnection();
+
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery()
         ) {
@@ -52,8 +53,11 @@ public class SupplyService {
 
         List<Supply> supplies = new ArrayList<>();
 
+
+        Connection connection = databaseManager.getConnection();
+        
         try (
-            Connection connection = databaseManager.getConnection();
+            
             PreparedStatement stmt = connection.prepareStatement(sql)
         ) {
             stmt.setInt(1, locationId);
@@ -81,8 +85,9 @@ public class SupplyService {
 
         List<Supply> supplies = new ArrayList<>();
 
+        Connection connection = databaseManager.getConnection();
+
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
         ) {
             stmt.setInt(1, locationId);
@@ -114,8 +119,9 @@ public class SupplyService {
 
         List<Supply> supplies = new ArrayList<>();
 
+        Connection connection = databaseManager.getConnection();
+
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
         ) {
             stmt.setInt(1, locationId);
@@ -137,9 +143,10 @@ public class SupplyService {
         validateSupply(supply);
 
         String sql = "INSERT INTO Supply (supply_type, location_id, victim_id, expiry_date, allocation_date, description) VALUES (?, ?, ?, ?, ?, ?)";
+        
+        Connection connection = databaseManager.getConnection();
 
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             fillSupplyFields(stmt, supply);
@@ -181,9 +188,9 @@ public class SupplyService {
                         SET supply_type = ?, location_id = ?, victim_id = ?, expiry_date = ?, allocation_date = ?, description = ?
                         WHERE id = ?
                     """;
+        Connection connection = databaseManager.getConnection();
 
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
         ) {
             fillSupplyFields(stmt, supply);
@@ -218,8 +225,9 @@ public class SupplyService {
 
         String sql = "UPDATE Supply SET victim_id = ?, allocation_date = CURRENT_DATE WHERE id = ?";
 
+        Connection connection = databaseManager.getConnection();
+
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
         ) {
             stmt.setInt(1, victimId);
@@ -247,8 +255,9 @@ public class SupplyService {
 
         String sql = "UPDATE Supply SET victim_id = NULL, allocation_date = NULL WHERE id = ?";
 
+        Connection connection = databaseManager.getConnection();
+
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
         ) {
             stmt.setInt(1, supplyId);
@@ -274,8 +283,9 @@ public class SupplyService {
 
         String sql = "DELETE FROM Supply WHERE id = ?";
 
+        Connection connection = databaseManager.getConnection();
+
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
         ) {
             stmt.setInt(1, supplyId);
@@ -300,8 +310,9 @@ public class SupplyService {
                         WHERE id = ?
                     """;
 
+        Connection connection = databaseManager.getConnection();
+
         try (
-            Connection connection = databaseManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
         ) {
             stmt.setInt(1, supplyId);

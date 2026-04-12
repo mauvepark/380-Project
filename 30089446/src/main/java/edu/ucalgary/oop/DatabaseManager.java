@@ -56,10 +56,14 @@ public class DatabaseManager {
     }
 
     public Connection getConnection() {
-        if (dbConnect == null) {
-            createConnection();
+        try {
+            if (dbConnect == null || dbConnect.isClosed()) {
+                createConnection();
+            }
+            return dbConnect;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get database connection.", e);
         }
-        return dbConnect;
     }
 
     // close connection to database

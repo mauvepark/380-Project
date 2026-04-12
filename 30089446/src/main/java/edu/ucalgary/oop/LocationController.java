@@ -7,9 +7,9 @@ public class LocationController {
     private final Scanner scanner;
 
     // constructor
-    public LocationController() {
+    public LocationController(Scanner scanner) {
         this.service = new LocationService();
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
     }
 
     // location menu
