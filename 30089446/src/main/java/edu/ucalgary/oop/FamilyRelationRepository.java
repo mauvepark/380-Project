@@ -71,8 +71,12 @@ public class FamilyRelationRepository {
                         FROM FamilyRelationship fr
                         JOIN Person p1 ON fr.person_one_id = p1.id
                         JOIN Person p2 ON fr.person_two_id = p2.id
+                        LEFT JOIN DisasterVictim dv1 ON fr.person_one_id = dv1.person_id
+                        LEFT JOIN DisasterVictim dv2 ON fr.person_two_id = dv2.person_id
+                        WHERE (dv1.person_id IS NULL OR dv1.is_soft_deleted = FALSE)
+                        AND (dv2.person_id IS NULL OR dv2.is_soft_deleted = FALSE)
                         ORDER BY fr.id
-                       """;
+                      """;
 
         try {
             PreparedStatement stmt = dbConnect.prepareStatement(query);
@@ -89,7 +93,11 @@ public class FamilyRelationRepository {
                         FROM FamilyRelationship fr
                         JOIN Person p1 ON fr.person_one_id = p1.id
                         JOIN Person p2 ON fr.person_two_id = p2.id
-                        WHERE fr.person_one_id = ? OR fr.person_two_id = ?
+                        LEFT JOIN DisasterVictim dv1 ON fr.person_one_id = dv1.person_id
+                        LEFT JOIN DisasterVictim dv2 ON fr.person_two_id = dv2.person_id
+                        WHERE (fr.person_one_id = ? OR fr.person_two_id = ?)
+                        AND (dv1.person_id IS NULL OR dv1.is_soft_deleted = FALSE)
+                        AND (dv2.person_id IS NULL OR dv2.is_soft_deleted = FALSE)
                         ORDER BY fr.id
                       """;
 
@@ -110,8 +118,12 @@ public class FamilyRelationRepository {
                         FROM FamilyRelationship fr
                         JOIN Person p1 ON fr.person_one_id = p1.id
                         JOIN Person p2 ON fr.person_two_id = p2.id
+                        LEFT JOIN DisasterVictim dv1 ON fr.person_one_id = dv1.person_id
+                        LEFT JOIN DisasterVictim dv2 ON fr.person_two_id = dv2.person_id
                         WHERE fr.id = ?
-                       """;
+                        AND (dv1.person_id IS NULL OR dv1.is_soft_deleted = FALSE)
+                        AND (dv2.person_id IS NULL OR dv2.is_soft_deleted = FALSE)
+                      """;
 
         try {
             PreparedStatement stmt = dbConnect.prepareStatement(query);

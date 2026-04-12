@@ -22,11 +22,11 @@ public class CulturalRequirementLoader {
             try (ObjectInputStream stream = new ObjectInputStream(input)) {
                 CulturalOptions data = (CulturalOptions) stream.readObject();
 
-                if (data == null || data.getOptions() == null) {
+                if (data == null || data.getAccomodations() == null) {
                     throw new RuntimeException("file contains no options");
                 }
 
-                return data.getOptions();
+                return data.getAccomodations();
             }
 
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class CulturalRequirementLoader {
         }
     }
 
-    public Map<String, Set<String>> getOptions() {
+    public Map<String, Set<String>> getAccomodations() {
         return Collections.unmodifiableMap(options);
     }
 }

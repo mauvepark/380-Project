@@ -5,15 +5,15 @@ import java.util.*;
 
 public class CulturalOptions implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final HashMap<String, Set<String>> OPTIONS;
+    private final HashMap<String, Set<String>> accommodations;
 
     // constructor
-    public CulturalOptions(HashMap<String, Set<String>> options) {
-        this.OPTIONS = options;
-    }
-    
+    public CulturalOptions(HashMap<String, Set<String>> accommodations) {
+        this.accommodations = accommodations;
+        }
+        
     // getter
-    public Map<String, Set<String>> getOptions() {
-        return OPTIONS;
+    public Map<String, Set<String>> getAccomodations() {
+        return accommodations;
     }
 }

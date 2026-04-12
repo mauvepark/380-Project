@@ -40,7 +40,7 @@ public class Main {
       System.out.println("7. Location Management");
       System.out.println("8. Exit");
 
-      int choice = readInt(scanner, "Please choose an option (1-7): ");
+      int choice = readInt(scanner, "Please choose an option (1-8): ");
 
       switch (choice) {
         case 1:

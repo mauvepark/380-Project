@@ -10,7 +10,7 @@ public class CulturalRequirementService {
     // constructor
     public CulturalRequirementService() {
         this.repository = new CulturalRequirementRepository(DatabaseManager.getInstance().getConnection());
-        this.options = new CulturalRequirementLoader().getOptions();
+        this.options = new CulturalRequirementLoader().getAccomodations();
         this.logger = ActionLogger.getInstance();
     }
 

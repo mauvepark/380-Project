@@ -101,8 +101,12 @@ public class InquiryRepository {
                         FROM Inquiry i
                         JOIN Person p1 ON i.inquirer_id = p1.id
                         LEFT JOIN Person p2 ON i.subject_person_id = p2.id
+                        LEFT JOIN DisasterVictim dv1 ON i.inquirer_id = dv1.person_id
+                        LEFT JOIN DisasterVictim dv2 ON i.subject_person_id = dv2.person_id
+                        WHERE (dv1.person_id IS NULL OR dv1.is_soft_deleted = FALSE)
+                        AND (dv2.person_id IS NULL OR dv2.is_soft_deleted = FALSE)
                         ORDER BY i.inquiry_date DESC, i.id
-                       """;
+                    """;
 
         try {
             PreparedStatement stmt = dbConnect.prepareStatement(query);
@@ -119,9 +123,13 @@ public class InquiryRepository {
                         FROM Inquiry i
                         JOIN Person p1 ON i.inquirer_id = p1.id
                         LEFT JOIN Person p2 ON i.subject_person_id = p2.id
+                        LEFT JOIN DisasterVictim dv1 ON i.inquirer_id = dv1.person_id
+                        LEFT JOIN DisasterVictim dv2 ON i.subject_person_id = dv2.person_id
                         WHERE i.inquirer_id = ?
+                        AND (dv1.person_id IS NULL OR dv1.is_soft_deleted = FALSE)
+                        AND (dv2.person_id IS NULL OR dv2.is_soft_deleted = FALSE)
                         ORDER BY i.inquiry_date DESC, i.id
-                       """;
+                    """;
 
         try {
             PreparedStatement stmt = dbConnect.prepareStatement(query);
@@ -135,13 +143,19 @@ public class InquiryRepository {
     // get inquiries by subject person
     public ResultSet getInquiriesBySubjectPerson(int subjectPersonId) {
         String query = """
-                        SELECT i.id, i.inquirer_id, i.subject_person_id, i.inquiry_date, i.details, p1.first_name AS inquirer_first_name, p1.last_name AS inquirer_last_name, p2.first_name AS subject_first_name, p2.last_name AS subject_last_name
+                        SELECT i.id, i.inquirer_id, i.subject_person_id, i.inquiry_date, i.details,
+                            p1.first_name AS inquirer_first_name, p1.last_name AS inquirer_last_name,
+                            p2.first_name AS subject_first_name, p2.last_name AS subject_last_name
                         FROM Inquiry i
                         JOIN Person p1 ON i.inquirer_id = p1.id
                         LEFT JOIN Person p2 ON i.subject_person_id = p2.id
+                        LEFT JOIN DisasterVictim dv1 ON i.inquirer_id = dv1.person_id
+                        LEFT JOIN DisasterVictim dv2 ON i.subject_person_id = dv2.person_id
                         WHERE i.subject_person_id = ?
+                        AND (dv1.person_id IS NULL OR dv1.is_soft_deleted = FALSE)
+                        AND (dv2.person_id IS NULL OR dv2.is_soft_deleted = FALSE)
                         ORDER BY i.inquiry_date DESC, i.id
-                       """;
+                    """;
 
         try {
             PreparedStatement stmt = dbConnect.prepareStatement(query);
@@ -159,8 +173,12 @@ public class InquiryRepository {
                         FROM Inquiry i
                         JOIN Person p1 ON i.inquirer_id = p1.id
                         LEFT JOIN Person p2 ON i.subject_person_id = p2.id
+                        LEFT JOIN DisasterVictim dv1 ON i.inquirer_id = dv1.person_id
+                        LEFT JOIN DisasterVictim dv2 ON i.subject_person_id = dv2.person_id
                         WHERE i.id = ?
-                       """;
+                        AND (dv1.person_id IS NULL OR dv1.is_soft_deleted = FALSE)
+                        AND (dv2.person_id IS NULL OR dv2.is_soft_deleted = FALSE)
+                    """;
 
         try {
             PreparedStatement stmt = dbConnect.prepareStatement(query);

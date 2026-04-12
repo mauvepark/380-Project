@@ -16,8 +16,7 @@ public class VictimService {
     }
 
     // add a new victim to the database
-    public DisasterVictim addVictim(Person person, LocalDate entryDate, LocalDate dateOfBirth, Integer approximateAge, 
-           String gender, Integer locationId) {
+    public DisasterVictim addVictim(Person person, LocalDate entryDate, LocalDate dateOfBirth, Integer approximateAge, String gender, String customGender, Integer locationId) {
         if (person == null) {
             throw new IllegalArgumentException("Person cannot be null.");
         }
@@ -32,7 +31,14 @@ public class VictimService {
         // insert person to get ID
         int personId = repository.insertPerson(person.getFirstName(), person.getLastName(), person.getComments());
 
-        repository.insertDisasterVictim(personId,dateOfBirth,approximateAge, gender, entryDate, locationId);
+        String storedGender = gender;
+
+        if (gender != null && gender.equalsIgnoreCase("please specify")
+                && customGender != null && !customGender.isBlank()) {
+            storedGender = customGender;
+        }
+
+        repository.insertDisasterVictim(personId, dateOfBirth, approximateAge, storedGender, entryDate, locationId);
 
         DisasterVictim victim;
             if (dateOfBirth != null) {
@@ -40,6 +46,10 @@ public class VictimService {
             } else {
                 victim = new DisasterVictim( personId, person.getFirstName(), person.getLastName(), person.getComments(), entryDate, approximateAge);
             }
+
+        if (storedGender != null && !storedGender.isBlank()) {
+            victim.loadGenderFromDB(storedGender);
+        }
 
         logger.log("ADDED", "disaster victim " + personId + " | Name: " + person.getFirstName() + " " + person.getLastName());
 
@@ -136,7 +146,7 @@ public class VictimService {
                     }
 
                 if (gender != null && !gender.isBlank()) {
-                    victim.setGender(gender);
+                    victim.loadGenderFromDB(gender);
                 }
 
                 victims.add(victim);

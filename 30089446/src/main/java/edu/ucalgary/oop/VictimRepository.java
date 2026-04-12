@@ -131,37 +131,48 @@ public class VictimRepository {
     public void hardDeleteVictim(int personId) {
         String deleteInquiry = "DELETE FROM Inquiry WHERE inquirer_id = ? OR subject_person_id = ?";
         String deleteRelationships = "DELETE FROM FamilyRelationship WHERE person_one_id = ? OR person_two_id = ?";
+        String deleteAllocatedSupplies = "DELETE FROM Supply WHERE victim_id = ?";
         String deletePerson = "DELETE FROM Person WHERE id = ?";
 
         try {
             dbConnect.setAutoCommit(false);
 
             try (PreparedStatement stmt1 = dbConnect.prepareStatement(deleteInquiry);
-                 PreparedStatement stmt2 = dbConnect.prepareStatement(deleteRelationships);
-                 PreparedStatement stmt3 = dbConnect.prepareStatement(deletePerson)) {
+                PreparedStatement stmt2 = dbConnect.prepareStatement(deleteRelationships);
+                PreparedStatement stmt3 = dbConnect.prepareStatement(deleteAllocatedSupplies);
+                PreparedStatement stmt4 = dbConnect.prepareStatement(deletePerson)) {
 
+                // delete inquiries
                 stmt1.setInt(1, personId);
                 stmt1.setInt(2, personId);
                 stmt1.executeUpdate();
 
+                // delete family relationships
                 stmt2.setInt(1, personId);
                 stmt2.setInt(2, personId);
                 stmt2.executeUpdate();
 
+                // delete supplies 
                 stmt3.setInt(1, personId);
-                int rows = stmt3.executeUpdate();
+                stmt3.executeUpdate();
+
+                // delete person record
+                stmt4.setInt(1, personId);
+                int rows = stmt4.executeUpdate();
 
                 if (rows == 0) {
-                    throw new RuntimeException("No person found with id: " + personId);
+                    throw new RuntimeException("No person found with ID: " + personId);
                 }
 
                 dbConnect.commit();
+
             } catch (SQLException | RuntimeException e) {
                 dbConnect.rollback();
                 throw e;
             } finally {
                 dbConnect.setAutoCommit(true);
             }
+
         } catch (SQLException e) {
             throw new RuntimeException("Could not hard delete victim.", e);
         }

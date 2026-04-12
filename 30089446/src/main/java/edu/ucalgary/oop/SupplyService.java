@@ -15,8 +15,13 @@ public class SupplyService {
 
     // loads supplies from the database
     public List<Supply> getAllSupplies() {
-        String sql = "SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description FROM Supply ORDER BY id";
-
+        String sql = """
+                        SELECT s.id, s.supply_type, s.location_id, s.victim_id, s.expiry_date, s.allocation_date, s.description
+                        FROM Supply s
+                        LEFT JOIN DisasterVictim dv ON s.victim_id = dv.person_id
+                        WHERE s.victim_id IS NULL OR dv.is_soft_deleted = FALSE
+                        ORDER BY s.id
+                     """;
         List<Supply> supplies = new ArrayList<>();
 
         try (
@@ -37,10 +42,12 @@ public class SupplyService {
     // loads supplies from the database by locaiton
     public List<Supply> getSuppliesByLocation(int locationId) {
         String sql = """
-                        SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description 
-                        FROM Supply 
-                        WHERE location_id = ? 
-                        ORDER BY id
+                        SELECT s.id, s.supply_type, s.location_id, s.victim_id, s.expiry_date, s.allocation_date, s.description
+                        FROM Supply s
+                        LEFT JOIN DisasterVictim dv ON s.victim_id = dv.person_id
+                        WHERE s.location_id = ?
+                        AND (s.victim_id IS NULL OR dv.is_soft_deleted = FALSE)
+                        ORDER BY s.id
                     """;
 
         List<Supply> supplies = new ArrayList<>();
@@ -95,11 +102,14 @@ public class SupplyService {
     // loads expired supplies by location
     public List<Supply> getExpiredSuppliesByLocation(int locationId) {
         String sql = """
-                        SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, 
-                        description FROM Supply WHERE location_id = ?
-                        AND expiry_date IS NOT NULL
-                        AND expiry_date < CURRENT_DATE
-                        ORDER BY expiry_date, id
+                        SELECT s.id, s.supply_type, s.location_id, s.victim_id, s.expiry_date, s.allocation_date, s.description
+                        FROM Supply s
+                        LEFT JOIN DisasterVictim dv ON s.victim_id = dv.person_id
+                        WHERE s.location_id = ?
+                        AND s.expiry_date IS NOT NULL
+                        AND s.expiry_date < CURRENT_DATE
+                        AND (s.victim_id IS NULL OR dv.is_soft_deleted = FALSE)
+                        ORDER BY s.expiry_date, s.id
                     """;
 
         List<Supply> supplies = new ArrayList<>();

@@ -7,12 +7,14 @@ public class VictimController {
     private final VictimService service;
     private final MedicalRecordService medicalRecordService;
     private final Scanner scanner;
+    private final CulturalRequirementController culturalController;
 
     // constructor
     public VictimController() {
         this.service = new VictimService();
         this.medicalRecordService = new MedicalRecordService();
         this.scanner = new Scanner(System.in);
+        this.culturalController = new CulturalRequirementController();
     }
 
     // victim menu
@@ -20,18 +22,17 @@ public class VictimController {
         boolean running = true;
 
         while (running) {
-            System.out.println();
-            System.out.println("----------- Victim Management Menu -----------");
             System.out.println("1. View active victims");
             System.out.println("2. Add a victim");
             System.out.println("3. Update victim name");
             System.out.println("4. Update victim age");
-            System.out.println("5. Manage victim medical records");
-            System.out.println("6. Soft delete victim");
-            System.out.println("7. Hard delete victim");
-            System.out.println("8. Back");
+            System.out.println("5. Manage cultural requirements");
+            System.out.println("6. Manage victim medical records");
+            System.out.println("7. Soft delete victim");
+            System.out.println("8. Hard delete victim");
+            System.out.println("9. Back");
 
-            int choice = readInt("Please choose an option (1-8): ");
+            int choice = readInt("Please choose an option (1-9): ");
 
             try {
                 switch (choice) {
@@ -48,19 +49,22 @@ public class VictimController {
                         updateVictimAgeInfo();
                         break;
                     case 5:
-                        manageVictimMedicalRecords();
+                        culturalController.menu();
                         break;
                     case 6:
-                        softDeleteVictim();
+                        manageVictimMedicalRecords();
                         break;
                     case 7:
-                        hardDeleteVictim();
+                        softDeleteVictim();
                         break;
                     case 8:
+                        hardDeleteVictim();
+                        break;
+                    case 9:
                         running = false;
                         break;
                     default:
-                        System.out.println("Invalid option. Please choose 1-8.");
+                        System.out.println("Invalid option. Please choose 1-9.");
                 }
             } catch (IllegalArgumentException | IllegalStateException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -95,7 +99,12 @@ public class VictimController {
         String firstName = readRequiredString("First name: ");
         String lastName = readOptionalString("Last name (press enter to leave blank): ");
         String comments = readOptionalString("Comments (press enter to leave blank): ");
-        String gender = readOptionalString("Gender (Man, Woman, Boy, Girl, please specify, or blank): ");
+        String gender = chooseGender();
+        String specifiedGender = null;
+
+        if (gender.equals("Please specify")) {
+            specifiedGender = readRequiredString("Enter custom gender: ");
+        }
 
         Integer locationId = readOptionalInt("Location (press enter to leave blank): ");
 
@@ -126,11 +135,16 @@ public class VictimController {
             dateOfBirth,
             approximateAge,
             gender,
+            specifiedGender,
             locationId
         );
 
         System.out.println("Victim added successfully.");
         printVictimSummary(victim);
+
+        if (confirm("Would you like to add cultural or religious requirements now? (Y/N): ")) {
+            culturalController.menu();
+        }
     }
 
     // update victim name
@@ -515,6 +529,42 @@ public class VictimController {
             }
 
             System.out.println("Please enter Y or N.");
+        }
+    }
+
+    private String chooseGender() {
+        while (true) {
+            System.out.println();
+            System.out.println("Choose gender:");
+            System.out.println("1. Man");
+            System.out.println("2. Woman");
+            System.out.println("3. Boy");
+            System.out.println("4. Girl");
+            System.out.println("5. Please specify");
+            System.out.println("6. Leave blank");
+
+            int choice = readInt("Please choose an option (1-6): ");
+
+            if (choice == 1) {
+                return "Man";
+            }
+            if (choice == 2) {
+                return "Woman";
+            }
+            if (choice == 3) {
+                return "Boy";
+            }
+            if (choice == 4) {
+                return "Girl";
+            }
+            if (choice == 5) {
+                return "Please specify";
+            }
+            if (choice == 6) {
+                return "";
+            }
+
+            System.out.println("Invalid option. Please choose 1-6.");
         }
     }
 }

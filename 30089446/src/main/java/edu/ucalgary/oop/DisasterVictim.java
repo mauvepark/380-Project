@@ -11,6 +11,7 @@ public class DisasterVictim extends Person {
     private final LocalDate ENTRY_DATE;
     private String gender;
     private Location location;
+    private boolean specifiedGender;
 
     public DisasterVictim(int id, String firstName, String lastName, String comments,
                           LocalDate entryDate, LocalDate dateOfBirth) {
@@ -32,6 +33,7 @@ public class DisasterVictim extends Person {
         this.familyConnections = new FamilyRelation[0];
         this.medicalRecords = new MedicalRecord[0];
         this.personalBelongings = new Supply[0];
+        this.specifiedGender = false;
     }
 
     public DisasterVictim(int id, String firstName, String lastName, String comments,
@@ -51,6 +53,8 @@ public class DisasterVictim extends Person {
         this.familyConnections = new FamilyRelation[0];
         this.medicalRecords = new MedicalRecord[0];
         this.personalBelongings = new Supply[0];
+        this.specifiedGender = false;
+
     }
 
     public DisasterVictim(String firstName, String lastName, String comments,
@@ -307,21 +311,24 @@ public class DisasterVictim extends Person {
             throw new IllegalArgumentException("Gender cannot be null or empty");
         }
 
+        // normalize to compare
         String normalizedGender = gender.trim();
         String lowerGender = normalizedGender.toLowerCase();
 
-        if (this.gender != null && this.gender.equalsIgnoreCase("please specify")) {
+        // please specify allows any string as gender
+        if (lowerGender.equals("please specify")) {
+            this.specifiedGender = true;
+            this.gender = "Please specify";
+            return;
+        }
+
+        if (this.specifiedGender) {
             this.gender = normalizedGender;
             return;
         }
 
         String[] adultOptions = {"man", "woman"};
         String[] childOptions = {"boy", "girl"};
-
-        if (lowerGender.equals("please specify")) {
-            this.gender = normalizedGender;
-            return;
-        }
 
         boolean isValidOption = false;
         String properCaseOption = null;
@@ -346,7 +353,7 @@ public class DisasterVictim extends Person {
 
         if (!isValidOption) {
             throw new IllegalArgumentException(
-                "Invalid gender. Acceptable values are: Man, Woman, Boy, Girl, or 'Please specify'"
+                "Invalid gender. Acceptable values are: Man, Woman, Boy, Girl, or 'Please specify'."
             );
         }
 
@@ -374,5 +381,28 @@ public class DisasterVictim extends Person {
         }
 
         this.gender = properCaseOption;
+    }
+
+    public void loadGenderFromDB(String gender) {
+        if (gender == null || gender.trim().isEmpty()) {
+            this.gender = null;
+            this.specifiedGender = false;
+            return;
+        }
+
+        String normalizedGender = gender.trim();
+        String lowerGender = normalizedGender.toLowerCase();
+
+        if (lowerGender.equals("man")
+                || lowerGender.equals("woman")
+                || lowerGender.equals("boy")
+                || lowerGender.equals("girl")
+                || lowerGender.equals("please specify")) {
+            this.specifiedGender = lowerGender.equals("please specify");
+            setGender(normalizedGender);
+        } else {
+            this.specifiedGender = true;
+            this.gender = normalizedGender;
+        }
     }
 }
