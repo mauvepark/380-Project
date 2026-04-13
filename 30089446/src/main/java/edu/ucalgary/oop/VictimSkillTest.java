@@ -6,6 +6,10 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the VictimSkill class.
+ * These tests check object creation and validation for victim skill records.
+ */
 public class VictimSkillTest {
 
     @Test

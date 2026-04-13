@@ -4,21 +4,40 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for managing supplies.
+ * This class loads, adds, updates, allocates, unallocates, and deletes supply records.
+ */
 public class SupplyService {
     private final DatabaseManager databaseManager;
     private final ActionLogger logger;
 
+    /**
+     * Constructor for SupplyService.
+     * Uses the shared database manager and action logger.
+     */
     public SupplyService() {
         this.databaseManager = DatabaseManager.getInstance();
         this.logger = ActionLogger.getInstance();
     }
 
+    /**
+     * Constructor for SupplyService with dependency injection.
+     *
+     * @param databaseManager the database manager used for connections
+     * @param logger the logger used to record actions
+     */
     public SupplyService(DatabaseManager databaseManager, ActionLogger logger) {
         this.databaseManager = databaseManager;
         this.logger = logger;
     }
 
-    // loads supplies from the database
+    /**
+     * Gets all supplies from the database.
+     *
+     * @return a list of all supplies
+     * @throws RuntimeException if the supplies cannot be loaded
+     */
     public List<Supply> getAllSupplies() {
         String sql = """
                         SELECT s.id, s.supply_type, s.location_id, s.victim_id, s.expiry_date, s.allocation_date, s.description
@@ -45,7 +64,13 @@ public class SupplyService {
         return supplies;
     }
 
-    // loads supplies from the database by locaiton
+    /**
+     * Gets all supplies for a specific location.
+     *
+     * @param locationId the location ID to search for
+     * @return a list of supplies at that location
+     * @throws RuntimeException if the supplies cannot be loaded
+     */
     public List<Supply> getSuppliesByLocation(int locationId) {
         String sql = """
                         SELECT s.id, s.supply_type, s.location_id, s.victim_id, s.expiry_date, s.allocation_date, s.description
@@ -79,7 +104,14 @@ public class SupplyService {
         return supplies;
     }
 
-    // loads supplies from database non-expired non-allocated
+    /**
+     * Gets supplies that are available for allocation at a location.
+     * Only non-expired and unallocated supplies are returned.
+     *
+     * @param locationId the location ID to search for
+     * @return a list of allocatable supplies
+     * @throws RuntimeException if the inventory cannot be loaded
+     */
     public List<Supply> getAvailableInventoryForAllocation(int locationId) {
         String sql = """
                         SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description 
@@ -109,7 +141,13 @@ public class SupplyService {
         return supplies;
     }
 
-    // loads expired supplies by location
+    /**
+     * Gets expired supplies for a specific location.
+     *
+     * @param locationId the location ID to search for
+     * @return a list of expired supplies
+     * @throws RuntimeException if the expired supplies cannot be loaded
+     */
     public List<Supply> getExpiredSuppliesByLocation(int locationId) {
         String sql = """
                         SELECT s.id, s.supply_type, s.location_id, s.victim_id, s.expiry_date, s.allocation_date, s.description
@@ -143,7 +181,14 @@ public class SupplyService {
         return supplies;
     }
 
-    // adds a new supply to the database
+    /**
+     * Adds a new supply to the database.
+     *
+     * @param supply the supply to add
+     * @return the saved supply with its generated ID
+     * @throws IllegalArgumentException if the supply data is invalid
+     * @throws RuntimeException if the supply cannot be added
+     */
     public Supply addSupply(Supply supply) {
         validateSupply(supply);
 
@@ -177,7 +222,13 @@ public class SupplyService {
         }
     }
 
-    // updates supply
+    /**
+     * Updates an existing supply.
+     *
+     * @param supply the supply to update
+     * @throws IllegalArgumentException if the supply is null, invalid, or has no valid ID
+     * @throws RuntimeException if the supply cannot be updated
+     */
     public void updateSupply(Supply supply) {
         if (supply == null) {
             throw new IllegalArgumentException("Supply cannot be null.");
@@ -213,7 +264,15 @@ public class SupplyService {
         }
     }
 
-    // allocates supply to a victim
+    /**
+     * Allocates a supply to a victim.
+     *
+     * @param supplyId the supply ID
+     * @param victimId the victim ID
+     * @throws IllegalArgumentException if the supply does not exist
+     * @throws IllegalStateException if the supply is already allocated or expired
+     * @throws RuntimeException if the supply cannot be allocated
+     */
     public void allocateSupply(int supplyId, int victimId) {
         Supply supply = getSupplyById(supplyId);
         if (supply == null) {
@@ -250,7 +309,13 @@ public class SupplyService {
         }
     }
 
-    // unallocates supply from victim
+    /**
+     * Removes a supply allocation from a victim.
+     *
+     * @param supplyId the supply ID
+     * @throws IllegalArgumentException if the supply does not exist
+     * @throws RuntimeException if the supply cannot be unallocated
+     */
     public void unallocateSupply(int supplyId) {
         Supply supply = getSupplyById(supplyId);
 
@@ -279,7 +344,13 @@ public class SupplyService {
         }
     }
 
-    // deletes supply
+    /**
+     * Deletes a supply from the database.
+     *
+     * @param supplyId the supply ID
+     * @throws IllegalArgumentException if the supply does not exist
+     * @throws RuntimeException if the supply cannot be deleted
+     */
     public void deleteSupply(int supplyId) {
         Supply supply = getSupplyById(supplyId);
         if (supply == null) {
@@ -307,7 +378,13 @@ public class SupplyService {
         }
     }
 
-    // gets supply by ID
+    /**
+     * Gets a supply by its ID.
+     *
+     * @param supplyId the supply ID
+     * @return the matching supply, or null if not found
+     * @throws RuntimeException if the supply cannot be loaded
+     */
     public Supply getSupplyById(int supplyId) {
         String sql = """
                         SELECT id, supply_type, location_id, victim_id, expiry_date, allocation_date, description
@@ -334,7 +411,12 @@ public class SupplyService {
         return null;
     }
 
-    // validation check
+    /**
+     * Validates a supply before saving it.
+     *
+     * @param supply the supply to validate
+     * @throws IllegalArgumentException if the supply data is invalid
+     */
     private void validateSupply(Supply supply) {
         if (supply == null) {
             throw new IllegalArgumentException("Supply cannot be null.");
@@ -353,7 +435,13 @@ public class SupplyService {
         }
     }
 
-    // fills ? in prepared statements
+    /**
+     * Fills a prepared statement with supply values.
+     *
+     * @param stmt the prepared statement to fill
+     * @param supply the supply providing the values
+     * @throws SQLException if a database field cannot be set
+     */
     private void fillSupplyFields(PreparedStatement stmt, Supply supply) throws SQLException {
         stmt.setString(1, supply.getSupplyType());
 
@@ -384,7 +472,13 @@ public class SupplyService {
         stmt.setString(6, supply.getDescription());
     }
 
-    // maps result to supply object
+    /**
+     * Converts a database row into a Supply object.
+     *
+     * @param rs the result set row
+     * @return the mapped Supply object
+     * @throws SQLException if the row data cannot be read
+     */
     private Supply mapRowToSupply(ResultSet rs) throws SQLException {
         Date expirySqlDate = rs.getDate("expiry_date");
         Date allocationSqlDate = rs.getDate("allocation_date");
@@ -400,7 +494,14 @@ public class SupplyService {
         );
     }
 
-    // gets nullable integer from result set
+    /**
+     * Reads an integer column that may be null.
+     *
+     * @param rs the result set
+     * @param columnName the column name to read
+     * @return the integer value, or null if the column is null
+     * @throws SQLException if the column cannot be read
+     */
     private Integer getNullInt(ResultSet rs, String columnName) throws SQLException {
         int value = rs.getInt(columnName);
 

@@ -3,6 +3,11 @@ package edu.ucalgary.oop;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Service class for managing family relationships between people in the disaster victim management system.
+ * This class provides methods to add, update, delete, and retrieve family relationships.
+ * Each family relationship links two people together with a specified relationship type (e.g., "Parent", "Sibling").
+ */
 public class FamilyRelationService {
 
   private final FamilyRelationRepository repository;
@@ -21,7 +26,16 @@ public class FamilyRelationService {
     this.logger = logger;
   }
 
-  // add a new family relation
+  /**
+   * Adds a new family relationship between two people with a specified relationship type.
+   * The method checks for valid input and prevents creating a relationship between the same person or duplicate relationships.
+   * 
+   * @param personOne the first person in the relationship
+   * @param relationshipType the type of family relationship (e.g., "Parent", "Sibling")
+   * @param personTwo the second person in the relationship
+   * @return the newly created FamilyRelation object representing the family relationship
+   * @throws IllegalArgumentException if the input is invalid (e.g., null values,
+   */
   public FamilyRelation addFamilyRelation(
     Person personOne,
     String relationshipType,
@@ -92,7 +106,13 @@ public class FamilyRelationService {
     return relation;
   }
 
-  // update relationship type
+  /**
+   * Updates the type of an existing family relationship.
+   *
+   * @param relation the family relation to update
+   * @param newRelationshipType the new relationship type
+   * @throws IllegalArgumentException if the input is invalid (e.g., null values, blank strings)
+   */
   public void updateRelationshipType(
     FamilyRelation relation,
     String newRelationshipType
@@ -112,18 +132,15 @@ public class FamilyRelationService {
     );
     relation.setRelationshipType(newRelationshipType.trim());
 
-    logger.log(
-      "UPDATED",
-      "family relation " +
-        relation.getId() +
-        " | Type: " +
-        oldRelationshipType +
-        " -> " +
-        newRelationshipType.trim()
-    );
+    logger.log("UPDATED", "family relation " + relation.getId() + " | Type: " + oldRelationshipType + " -> " + newRelationshipType.trim());
   }
 
-  // delete family relation
+  /**
+   * Deletes an existing family relationship.
+   * 
+   * @param relation the family relation to delete
+   * @throws IllegalArgumentException if the input is invalid (e.g., null value)
+   */
   public void deleteFamilyRelation(FamilyRelation relation) {
     if (relation == null) {
       throw new IllegalArgumentException("Family relation cannot be null.");
@@ -148,7 +165,12 @@ public class FamilyRelationService {
     );
   }
 
-  // get all family relations
+  /** 
+   * Retrieves all family relationships from the database, including the IDs and names of the two people involved and the type of relationship.
+   * 
+   * @return a list of FamilyRelation objects representing all family relationships in the database
+   * @throws RuntimeException if there is an error retrieving the family relationships from the database.
+   */
   public List<FamilyRelation> getAllFamilyRelations() {
     List<FamilyRelation> relations = new ArrayList<>();
 
@@ -163,7 +185,14 @@ public class FamilyRelationService {
     return relations;
   }
 
-  // get family relations for one person
+  /**
+   * Retrieves all family relationships for a specific person from the database, including the IDs and names of the two people involved and the type of relationship.
+   * 
+   * @param personId the ID of the person for whom to retrieve family relationships
+   * @return a list of FamilyRelation objects representing the family relationships for the specified person
+   * @throws IllegalArgumentException if the input is invalid (e.g., non-positive person ID)
+   * @throws RuntimeException if there is an error retrieving the family relationships from the database
+   */
   public List<FamilyRelation> getFamilyRelationsForPerson(int personId) {
     if (personId <= 0) {
       throw new IllegalArgumentException("Person ID must be positive.");
@@ -185,7 +214,14 @@ public class FamilyRelationService {
     return relations;
   }
 
-  // get one family relation by id
+  /**
+   * Retrieves a family relationship by its ID from the database.
+   *
+   * @param relationId the ID of the family relation to retrieve
+   * @return the FamilyRelation object representing the family relationship, or null if not found
+   * @throws IllegalArgumentException if the input is invalid (e.g., non-positive relation ID)
+   * @throws RuntimeException if there is an error retrieving the family relationship from the database
+   */
   public FamilyRelation getFamilyRelationById(int relationId) {
     if (relationId <= 0) {
       throw new IllegalArgumentException("Relation ID must be positive.");
@@ -202,7 +238,13 @@ public class FamilyRelationService {
     return null;
   }
 
-  // map result to family relation object
+  /**
+   * Maps a row from the ResultSet to a FamilyRelation object.
+   *
+   * @param rs the ResultSet containing the row data
+   * @return the FamilyRelation object representing the mapped data
+   * @throws SQLException if there is an error accessing the ResultSet
+   */
   private FamilyRelation mapRowToFamilyRelation(ResultSet rs)
     throws SQLException {
     Person personOne = new Person(

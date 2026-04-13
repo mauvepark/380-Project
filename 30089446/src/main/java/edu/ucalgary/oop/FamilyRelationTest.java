@@ -5,6 +5,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the FamilyRelation class.
+ * These tests check object creation and validation for family relationships.
+ */
 public class FamilyRelationTest {
 
     private FamilyRelation relation;

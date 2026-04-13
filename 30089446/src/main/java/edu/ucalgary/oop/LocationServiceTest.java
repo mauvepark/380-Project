@@ -8,6 +8,10 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the LocationService class.
+ * These tests check adding, updating, deleting, and retrieving locations.
+ */
 public class LocationServiceTest {
 
     private LocationService service;

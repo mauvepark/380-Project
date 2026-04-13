@@ -1,5 +1,9 @@
 package edu.ucalgary.oop;
 
+/**
+ * Class to represent a family relationship between two disaster victims. 
+ * Each relationship has a type (e.g., "Parent", "Sibling") and involves two people.
+ */
 public class FamilyRelation {
     private int id;
     private Person personOne;

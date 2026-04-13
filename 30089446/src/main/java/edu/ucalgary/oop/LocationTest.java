@@ -7,6 +7,10 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the Location class.
+ * These tests check object creation, updates, and validation for locations.
+ */
 public class LocationTest {
 
     private Location location;

@@ -9,6 +9,12 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the MedicalRecordService class. 
+ * These tests cover adding, updating, and deleting medical records, as well as validation of inputs and retrieval of medical records for a victim. 
+ * Mock repositories and a mock logger are used to isolate the service logic from external dependencies. 
+ * Each test checks that the expected behavior occurs and that appropriate exceptions are thrown for invalid inputs.
+ */
 public class MedicalRecordServiceTest {
 
     private MedicalRecordService service;
@@ -16,7 +22,7 @@ public class MedicalRecordServiceTest {
     private MockVictimRepository mockVictimRepository;
     private MockLocationRepository mockLocationRepository;
     private MockActionLogger mockLogger;
-
+    
     @Before
     public void setUp() {
         mockRepository = new MockMedicalRecordRepository();

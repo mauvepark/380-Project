@@ -2,6 +2,10 @@ package edu.ucalgary.oop;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a skill assigned to a victim.
+ * It stores the victim, the skill, and any extra details about that skill assignment.
+ */
 public class VictimSkill {
     private int id;
     private int victimId;
@@ -11,7 +15,17 @@ public class VictimSkill {
     private LocalDate certificationExpiry;
     private String proficiencyLevel;
 
-    // constructors
+    /**
+     * Creates a victim skill with a known ID.
+     *
+     * @param id the victim skill ID
+     * @param victimId the victim ID
+     * @param skillId the skill ID
+     * @param details extra details about the skill
+     * @param languageCapabilities language capabilities if needed
+     * @param certificationExpiry the certification expiry date if needed
+     * @param proficiencyLevel the victim's proficiency level
+     */
     public VictimSkill(int id, int victimId, int skillId, String details, String languageCapabilities, 
                        LocalDate certificationExpiry, String proficiencyLevel) {
         setId(id);
@@ -23,6 +37,16 @@ public class VictimSkill {
         setProficiencyLevel(proficiencyLevel);
     }
 
+    /**
+     * Creates a victim skill without an ID.
+     *
+     * @param victimId the victim ID
+     * @param skillId the skill ID
+     * @param details extra details about the skill
+     * @param languageCapabilities language capabilities if needed
+     * @param certificationExpiry the certification expiry date if needed
+     * @param proficiencyLevel the victim's proficiency level
+     */
     public VictimSkill(int victimId, int skillId, String details, String languageCapabilities, LocalDate certificationExpiry,
                        String proficiencyLevel) {
         setVictimId(victimId);

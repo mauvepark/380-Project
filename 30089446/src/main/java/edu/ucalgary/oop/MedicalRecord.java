@@ -2,6 +2,13 @@ package edu.ucalgary.oop;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a medical record for a disaster victim, containing details about the treatment they received, 
+ * the date of treatment, and the location where the treatment was provided. 
+ * Each medical record is associated with a specific victim and may optionally be linked to a location where the treatment occurred. 
+ * The class includes validation to ensure that all required fields are properly set and that the data is consistent 
+ * (e.g., treatment date cannot be in the future).
+ */
 public class MedicalRecord {
     private int id;
     private int victimId;
@@ -10,7 +17,15 @@ public class MedicalRecord {
     private Integer locationId;
     private DisasterVictim victim;
 
-    // constructors
+    /**
+     * Constructor for creating a MedicalRecord with a specified ID (used when loading from the database).
+     * 
+     * @param id the unique identifier for the medical record (must be non-negative)
+     * @param victimId the ID of the victim associated with this medical record (must be positive)
+     * @param treatmentDetails details about the treatment provided (cannot be null or blank)
+     * @param treatmentDate the date when the treatment was provided (cannot be null or in the future)
+     * @param locationId the ID of the location where the treatment was provided (can be null if not applicable)
+     */
     public MedicalRecord(int id, int victimId, String treatmentDetails, LocalDate treatmentDate, Integer locationId) {
         setId(id);
         setVictimId(victimId);
@@ -19,6 +34,14 @@ public class MedicalRecord {
         setLocationId(locationId);
     }
 
+    /**
+     * Constructor for creating a MedicalRecord without specifying an ID (used when creating a new record to be inserted into the database).
+     * 
+     * @param victimId the ID of the victim associated with this medical record (must be positive)
+     * @param treatmentDetails details about the treatment provided (cannot be null or blank)
+     * @param treatmentDate the date when the treatment was provided (cannot be null or in the future)
+     * @param locationId the ID of the location where the treatment was provided (can be null if not applicable)
+     */
     public MedicalRecord(int victimId, String treatmentDetails, LocalDate treatmentDate, Integer locationId) {
         setVictimId(victimId);
         setTreatmentDetails(treatmentDetails);

@@ -8,6 +8,10 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the SkillService class.
+ * These tests check skill assignment, removal, retrieval, and validation.
+ */
 public class SkillServiceTest {
 
     private SkillService service;

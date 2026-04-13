@@ -3,6 +3,10 @@ package edu.ucalgary.oop;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the CulturalRequirement class.
+ * These tests check object creation and validation for cultural requirements.
+ */
 public class CulturalRequirementTest {
 
 

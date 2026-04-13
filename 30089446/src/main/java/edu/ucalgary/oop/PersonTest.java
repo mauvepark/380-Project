@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the Person class. 
+ * These tests cover constructor validation as well as setter/getter methods.
+ */
 public class PersonTest {
 
     @Test

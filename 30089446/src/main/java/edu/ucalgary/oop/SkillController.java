@@ -3,19 +3,36 @@ package edu.ucalgary.oop;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Controller class to manage user interactions related to victim skills.
+ * This class provides a menu-driven interface for viewing, adding, removing,
+ * and searching victim skills.
+ * It interacts with the SkillService and VictimService to perform the necessary operations on skill data.
+ */
 public class SkillController {
     private final SkillService service;
     private final VictimService victimService;
     private final Scanner scanner;
 
-    // constructor
+    /**
+     * Constructor for SkillController. Initializes the SkillService, VictimService,
+     * and sets up the Scanner for user input.
+     * 
+     * @param scanner
+     */
     public SkillController(Scanner scanner) {
         this.service = new SkillService();
         this.victimService = new VictimService();
         this.scanner = scanner;
     }
 
-    // skill menu
+    /**
+     * Displays the skill registry menu and handles user input to perform various operations on victim skills,
+     * such as viewing skills for a victim, adding a skill, removing a skill, and searching victims by skill category.
+     * The menu continues to display until the user chooses to go back.
+     * 
+     * @throws RuntimeException if an unexpected error occurs while processing a menu operation
+     */
     public void menu() {
         boolean running = true;
 
@@ -58,7 +75,13 @@ public class SkillController {
         }
     }
 
-    // view victim skills
+    /**
+     * Displays all registered skills for a selected victim.
+     * The user is first prompted to choose an active victim, after which each associated skill is displayed.
+     * If the victim has no registered skills, the user is informed accordingly.
+     * 
+     * @throws RuntimeException if the victim skills cannot be retrieved due to a service error
+     */
     public void viewSkillsForVictim() {
         System.out.println();
         System.out.println("----------- View Victim Skills -----------");
@@ -80,7 +103,13 @@ public class SkillController {
         }
     }
 
-    // add skill
+    /**
+     * Prompts the user to select a victim and enter the information needed to add a new skill.
+     * The required input varies depending on the skill category selected by the user.
+     * Once all necessary information is collected, the skill is added to the selected victim.
+     * 
+     * @throws RuntimeException if the skill cannot be added due to invalid input or service errors
+     */
     public void addSkillToVictim() {
         System.out.println();
         System.out.println("----------- Add Skill To Victim -----------");
@@ -122,7 +151,13 @@ public class SkillController {
         System.out.println("Skill added successfully.");
     }
 
-    // remove skill
+    /**
+     * Allows the user to remove an existing skill from a selected victim.
+     * The current skills for the victim are displayed, and the user is prompted to choose one by victim skill ID.
+     * A confirmation step is required before the skill is removed.
+     * 
+     * @throws RuntimeException if the skill cannot be removed due to invalid input or service errors
+     */
     public void removeSkillFromVictim() {
         System.out.println();
         System.out.println("----------- Remove Skill From Victim -----------");
@@ -154,7 +189,13 @@ public class SkillController {
         System.out.println("Skill removed successfully.");
     }
 
-    // search by category
+    /**
+     * Searches for active victims who have skills in a selected category.
+     * The matching active victims are displayed in summary format.
+     * If no matching victims are found, the user is informed accordingly.
+     * 
+     * @throws RuntimeException if the victim search cannot be completed due to a service error
+     */
     public void searchVictimsByCategory() {
         System.out.println();
         System.out.println("----------- Search Victims By Skill Category -----------");
@@ -182,7 +223,13 @@ public class SkillController {
         }
     }
 
-    // select victim
+    /**
+     * Displays a list of active victims and prompts the user to select one by ID.
+     * If the entered ID does not match an active victim, the user is informed and {@code null} is returned.
+     * 
+     * @return the selected DisasterVictim, or null if no matching active victim is found
+     * @throws RuntimeException if the list of active victims cannot be retrieved
+     */
     private DisasterVictim selectVictim() {
         List<DisasterVictim> victims = victimService.getActiveVictims();
 
@@ -207,7 +254,12 @@ public class SkillController {
         return null;
     }
 
-    // print victim summary
+    /**
+     * Displays a summary of the given victim, including identifying details such as name,
+     * age or birthdate, gender, and entry date.
+     * 
+     * @param victim the victim whose summary should be displayed
+     */
     private void printVictimSummary(DisasterVictim victim) {
         String ageInfo;
         if (victim.getDateOfBirth() != null) {
@@ -225,7 +277,12 @@ public class SkillController {
                             + " | " + ageInfo + " | Gender: " + victim.getGender() + " | Entry Date: " + victim.getEntryDate());
     }
 
-    // print victim skill
+    /**
+     * Displays a formatted summary of a victim skill, including the skill name, category,
+     * proficiency level, and any optional details such as language capabilities or certification expiry.
+     * 
+     * @param victimSkill the victim skill record to display
+     */
     private void printVictimSkill(VictimSkill victimSkill) {
         Skill matchedSkill = findSkillById(victimSkill.getSkillId());
 
@@ -255,6 +312,13 @@ public class SkillController {
         System.out.println();
     }
 
+    /**
+     * Searches for a skill by its ID from the list of all available skills.
+     * 
+     * @param skillId the ID of the skill to search for
+     * @return the matching Skill if found, otherwise null
+     * @throws RuntimeException if the list of available skills cannot be retrieved
+     */
     private Skill findSkillById(int skillId) {
         List<Skill> skills = service.getAllSkills();
 
@@ -267,6 +331,12 @@ public class SkillController {
         return null;
     }
 
+    /**
+     * Prompts the user to choose a skill category from the available options.
+     * The user is repeatedly prompted until a valid selection is made.
+     * 
+     * @return the selected skill category
+     */
     private String chooseCategory() {
         while (true) {
             System.out.println();
@@ -291,6 +361,12 @@ public class SkillController {
         }
     }
 
+    /**
+     * Prompts the user to choose a medical skill from the predefined options.
+     * The user is repeatedly prompted until a valid selection is made.
+     * 
+     * @return the selected medical skill name
+     */
     private String chooseMedicalSkill() {
         while (true) {
             System.out.println();
@@ -319,6 +395,12 @@ public class SkillController {
         }
     }
 
+    /**
+     * Prompts the user to choose a trade skill from the predefined options.
+     * The user is repeatedly prompted until a valid selection is made.
+     * 
+     * @return the selected trade skill name
+     */
     private String chooseTradeSkill() {
         while (true) {
             System.out.println();
@@ -343,6 +425,12 @@ public class SkillController {
         }
     }
 
+    /**
+     * Prompts the user to choose language capabilities for a language skill.
+     * The user is repeatedly prompted until a valid selection is made.
+     * 
+     * @return the selected language capability description
+     */
     private String chooseLanguageCapabilities() {
         while (true) {
             System.out.println();
@@ -367,6 +455,12 @@ public class SkillController {
         }
     }
 
+    /**
+     * Prompts the user to choose a proficiency level from the available options.
+     * The user is repeatedly prompted until a valid selection is made.
+     * 
+     * @return the selected proficiency level
+     */
     private String chooseProficiencyLevel() {
         while (true) {
             System.out.println();
@@ -391,7 +485,14 @@ public class SkillController {
         }
     }
 
-    // validation and input methods
+    /**
+     * Utility method to read an integer from user input with a prompt.
+     * It continues to prompt the user until a valid integer is entered.
+     * 
+     * @param prompt the message to display to the user when asking for input
+     * @return the integer value entered by the user
+     * @throws RuntimeException if the user input cannot be parsed as an integer
+     */
     private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -405,6 +506,14 @@ public class SkillController {
         }
     }
 
+    /**
+     * Utility method to read a date from user input with a prompt.
+     * It continues to prompt the user until a valid date in YYYY-MM-DD format is entered.
+     * 
+     * @param prompt the message to display to the user when asking for input
+     * @return the date value entered by the user
+     * @throws RuntimeException if the user input cannot be parsed as a valid date
+     */
     private LocalDate readDate(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -418,6 +527,13 @@ public class SkillController {
         }
     }
 
+    /**
+     * Utility method to read a non-blank string from user input with a prompt.
+     * It continues to prompt the user until a non-empty value is entered.
+     * 
+     * @param prompt the message to display to the user when asking for input
+     * @return the non-blank string entered by the user
+     */
     private String readRequiredString(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -431,11 +547,25 @@ public class SkillController {
         }
     }
 
+    /**
+     * Utility method to read an optional string from user input with a prompt.
+     * Blank input is allowed and returned as an empty string.
+     * 
+     * @param prompt the message to display to the user when asking for input
+     * @return the trimmed string entered by the user
+     */
     private String readOptionalString(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
     }
 
+    /**
+     * Utility method to confirm an action with the user using a yes or no prompt.
+     * It continues to prompt until the user enters a valid response.
+     * 
+     * @param prompt the message to display to the user when asking for confirmation
+     * @return true if the user confirms the action, false otherwise
+     */
     private boolean confirm(String prompt) {
         while (true) {
             System.out.print(prompt);

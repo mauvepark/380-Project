@@ -3,13 +3,22 @@ package edu.ucalgary.oop;
 import java.time.*;
 import java.util.*;
 
+/**
+ * Controller class for managing victims.
+ * This class provides menu options for viewing, adding, updating, and deleting victims.
+ */
 public class VictimController {
     private final VictimService service;
     private final MedicalRecordService medicalRecordService;
     private final Scanner scanner;
     private final CulturalRequirementController culturalController;
 
-    // constructor
+    /**
+     * Constructor for VictimController.
+     * Sets up the services and scanner used for victim operations.
+     * 
+     * @param scanner
+     */
     public VictimController(Scanner scanner) {
         this.service = new VictimService();
         this.medicalRecordService = new MedicalRecordService();
@@ -17,7 +26,12 @@ public class VictimController {
         this.culturalController = new CulturalRequirementController(scanner);
     }
 
-    // victim menu
+    /**
+     * Displays the victim menu and handles user choices.
+     * The menu keeps running until the user chooses to go back.
+     * 
+     * @throws RuntimeException if an unexpected error happens during a menu action
+     */
     public void menu() {
         boolean running = true;
 
@@ -74,7 +88,12 @@ public class VictimController {
         }
     }
 
-    // view victims
+    /**
+     * Displays all active victims.
+     * If there are no active victims, the user is informed.
+     * 
+     * @throws RuntimeException if the victims cannot be loaded
+     */
     public void viewActiveVictims() {
         List<DisasterVictim> victims = service.getActiveVictims();
 
@@ -91,7 +110,11 @@ public class VictimController {
         }
     }
 
-    // add victim
+    /**
+     * Prompts the user for victim information and adds a new victim.
+     * 
+     * @throws RuntimeException if the victim cannot be added
+     */
     public void addVictim() {
         System.out.println();
         System.out.println("----------- Add Victim -----------");
@@ -147,7 +170,11 @@ public class VictimController {
         }
     }
 
-    // update victim name
+    /**
+     * Updates the name of a selected victim.
+     * 
+     * @throws RuntimeException if the victim name cannot be updated
+     */
     public void updateVictimName() {
         System.out.println();
         System.out.println("----------- Update Victim Name -----------");
@@ -165,7 +192,12 @@ public class VictimController {
         System.out.println("Victim name updated successfully.");
     }
 
-    // update victim age info
+    /**
+     * Updates the age information for a selected victim.
+     * The update can use either a birthdate or an approximate age.
+     * 
+     * @throws RuntimeException if the victim age information cannot be updated
+     */
     public void updateVictimAgeInfo() {
         System.out.println();
         System.out.println("----------- Update Victim Age -----------");
@@ -202,7 +234,11 @@ public class VictimController {
         }
     }
 
-    // medical record submenu
+    /**
+     * Opens the medical record submenu for a selected victim.
+     * 
+     * @throws RuntimeException if medical records cannot be managed
+     */
     public void manageVictimMedicalRecords() {
         System.out.println();
         System.out.println("----------- Manage Victim Medical Records -----------");
@@ -249,6 +285,12 @@ public class VictimController {
         }
     }
 
+    /**
+     * Displays all medical records for a victim.
+     * 
+     * @param victim the victim whose medical records will be shown
+     * @throws RuntimeException if the medical records cannot be loaded
+     */
     private void viewMedicalRecordsForVictim(DisasterVictim victim) {
         System.out.println();
         System.out.println("----------- Victim Medical Records -----------");
@@ -265,6 +307,12 @@ public class VictimController {
         }
     }
 
+    /**
+     * Adds a medical record for a victim.
+     * 
+     * @param victim the victim receiving the medical record
+     * @throws RuntimeException if the medical record cannot be added
+     */
     private void addMedicalRecordForVictim(DisasterVictim victim) {
         System.out.println();
         System.out.println("----------- Add Medical Record -----------");
@@ -284,6 +332,12 @@ public class VictimController {
         printMedicalRecordSummary(record);
     }
 
+    /**
+     * Updates a medical record for a victim.
+     * 
+     * @param victim the victim whose medical record will be updated
+     * @throws RuntimeException if the medical record cannot be updated
+     */
     private void updateMedicalRecordForVictim(DisasterVictim victim) {
         System.out.println();
         System.out.println("----------- Update Medical Record -----------");
@@ -323,6 +377,12 @@ public class VictimController {
         System.out.println("Medical record updated successfully.");
     }
 
+    /**
+     * Deletes a medical record for a victim after confirmation.
+     * 
+     * @param victim the victim whose medical record will be deleted
+     * @throws RuntimeException if the medical record cannot be deleted
+     */
     private void deleteMedicalRecordForVictim(DisasterVictim victim) {
         System.out.println();
         System.out.println("----------- Delete Medical Record -----------");
@@ -362,7 +422,12 @@ public class VictimController {
         System.out.println("Medical record deleted successfully.");
     }
 
-    // soft delete victim
+    /**
+     * Soft deletes a selected victim.
+     * The victim stays in the database but is hidden from normal use.
+     * 
+     * @throws RuntimeException if the victim cannot be soft deleted
+     */
     public void softDeleteVictim() {
         System.out.println();
         System.out.println("----------- Soft Delete Victim -----------");
@@ -382,7 +447,12 @@ public class VictimController {
         System.out.println("Victim soft deleted successfully.");
     }
 
-    // hard delete victim
+    /**
+     * Hard deletes a selected victim.
+     * This permanently removes the victim and related records.
+     * 
+     * @throws RuntimeException if the victim cannot be hard deleted
+     */
     public void hardDeleteVictim() {
         System.out.println();
         System.out.println("----------- Hard Delete Victim -----------");
@@ -402,7 +472,12 @@ public class VictimController {
         System.out.println("Victim hard deleted successfully.");
     }
 
-    // select victim by id from active victims
+    /**
+     * Lets the user choose an active victim by ID.
+     * 
+     * @return the selected victim, or null if no match is found
+     * @throws RuntimeException if the victims cannot be loaded
+     */
     private DisasterVictim selectVictim() {
         List<DisasterVictim> victims = service.getActiveVictims();
 
@@ -427,7 +502,11 @@ public class VictimController {
         return null;
     }
 
-    // print victim info
+    /**
+     * Prints a one-line summary of a victim.
+     * 
+     * @param victim the victim to display
+     */
     private void printVictimSummary(DisasterVictim victim) {
         String ageInfo;
         if (victim.getDateOfBirth() != null) {
@@ -445,6 +524,11 @@ public class VictimController {
                 + " | " + ageInfo + " | Gender: " + victim.getGender() + " | Entry Date: " + victim.getEntryDate());
     }
 
+    /**
+     * Prints a one-line summary of a medical record.
+     * 
+     * @param record the medical record to display
+     */
     private void printMedicalRecordSummary(MedicalRecord record) {
         String locationInfo = record.getLocationId() == null ? "None" : String.valueOf(record.getLocationId());
 
@@ -454,7 +538,13 @@ public class VictimController {
                 + " | Details: " + record.getTreatmentDetails());
     }
 
-    // validate inputs
+    /**
+     * Reads an integer from the user.
+     * Keeps asking until the user enters a valid number.
+     * 
+     * @param prompt the message shown to the user
+     * @return the integer entered by the user
+     */
     private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -468,6 +558,13 @@ public class VictimController {
         }
     }
 
+    /**
+     * Reads an optional integer from the user.
+     * Blank input is allowed and returns null.
+     * 
+     * @param prompt the message shown to the user
+     * @return the integer entered by the user, or null if left blank
+     */
     private Integer readOptionalInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -485,6 +582,13 @@ public class VictimController {
         }
     }
 
+    /**
+     * Reads a date from the user.
+     * Keeps asking until the user enters a valid date.
+     * 
+     * @param prompt the message shown to the user
+     * @return the date entered by the user
+     */
     private LocalDate readDate(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -498,6 +602,13 @@ public class VictimController {
         }
     }
 
+    /**
+     * Reads a required string from the user.
+     * Keeps asking until the user enters a non-blank value.
+     * 
+     * @param prompt the message shown to the user
+     * @return the string entered by the user
+     */
     private String readRequiredString(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -511,11 +622,23 @@ public class VictimController {
         }
     }
 
+    /**
+     * Reads an optional string from the user.
+     * 
+     * @param prompt the message shown to the user
+     * @return the string entered by the user
+     */
     private String readOptionalString(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
     }
 
+    /**
+     * Asks the user to confirm an action with yes or no.
+     * 
+     * @param prompt the message shown to the user
+     * @return true if the user confirms, false otherwise
+     */
     private boolean confirm(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -532,6 +655,11 @@ public class VictimController {
         }
     }
 
+    /**
+     * Lets the user choose a gender option from the menu.
+     * 
+     * @return the selected gender value
+     */
     private String chooseGender() {
         while (true) {
             System.out.println();

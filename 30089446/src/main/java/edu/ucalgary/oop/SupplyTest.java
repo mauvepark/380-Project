@@ -6,6 +6,10 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the Supply class.
+ * These tests check object creation, validation, and supply status methods.
+ */
 public class SupplyTest {
 
     @Test

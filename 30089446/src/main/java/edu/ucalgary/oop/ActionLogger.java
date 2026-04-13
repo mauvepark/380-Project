@@ -4,11 +4,15 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Singleton class to log actions performed in the system. 
+ * Logs are written to a text file in the format
+ * [yyyy-MM-dd] | action_type | description
+ */
 public class ActionLogger {
     private static ActionLogger instance;
     private static final String LOG_PATH = "data/action_log.txt";
 
-    // constructor
     public static ActionLogger getInstance() {
         if (instance == null) {
             instance = new ActionLogger();
@@ -16,7 +20,12 @@ public class ActionLogger {
         return instance;
     }
 
-    // log action in format specified in requirements
+    /**
+     * Logs an action to the log file with the current timestamp, action type, and description.
+     * 
+     * @param actionType A string representing the type of action (e.g., "ADDED", "UPDATED", "DELETED").
+     * @param description A detailed description of the action performed.
+     */
     public void log(String actionType, String description) {
         String line = "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+ "] " + actionType + " | " + description;
 

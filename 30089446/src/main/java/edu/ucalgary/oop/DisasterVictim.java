@@ -2,6 +2,12 @@ package edu.ucalgary.oop;
 
 import java.time.LocalDate;
 
+/**
+ * Class to represent a disaster victim, extending the Person class.
+ * This class includes additional attributes specific to disaster victims, such as date of birth, approximate age,
+ * family connections, medical records, personal belongings, entry date, gender, and location. 
+ * It also includes methods to manage these attributes and ensure data integrity.
+ */
 public class DisasterVictim extends Person {
     private LocalDate dateOfBirth;
     private Integer approximateAge;
@@ -165,6 +171,12 @@ public class DisasterVictim extends Person {
         this.location = location;
     }
 
+    /**
+     * Adds a personal belonging (supply) to the victim's list of belongings.
+     * 
+     * @param supply
+     * @throws IllegalArgumentException if the supply is null
+     */
     public void addPersonalBelonging(Supply supply) {
         if (supply == null) {
             throw new IllegalArgumentException("Supply cannot be null");
@@ -205,6 +217,12 @@ public class DisasterVictim extends Person {
         this.personalBelongings = updated;
     }
 
+    /** 
+     * Removes a family connection from this victim and also removes the connection from the related victim to maintain consistency.
+     * 
+     * @param relation The family relation to remove.
+     * @throws IllegalArgumentException if the relation is null or if this victim is not part of the relation.
+     */
     public void removeFamilyConnection(FamilyRelation relation) {
         if (relation == null) {
             throw new IllegalArgumentException("Family relation to remove cannot be null");
@@ -226,6 +244,12 @@ public class DisasterVictim extends Person {
         }
     }
 
+    /**
+     * Removes a family connection from this victim without modifying the related victim. 
+     * This is used internally to maintain consistency when removing a family connection.
+     * 
+     * @param relation The family relation to remove.
+     */
     private void removeFamilyConnectionInternal(FamilyRelation relation) {
         int index = -1;
         for (int i = 0; i < familyConnections.length; i++) {
@@ -251,6 +275,12 @@ public class DisasterVictim extends Person {
         this.familyConnections = updated;
     }
 
+    /**
+     * Adds a family connection to this victim and also adds the connection to the related victim to maintain consistency.
+     * 
+     * @param relation The family relation to add.
+     * @throws IllegalArgumentException if the relation is null or if this victim is not part of the relation.
+     */
     public void addFamilyConnection(FamilyRelation relation) {
         if (relation == null) {
             throw new IllegalArgumentException("Family relation cannot be null");
@@ -272,6 +302,12 @@ public class DisasterVictim extends Person {
         }
     }
 
+    /**
+     * Adds a family connection to this victim without modifying the related victim.
+     * 
+     * @param relation The family relation to add.
+     * @throws IllegalArgumentException if the relation is null or if this victim is not part of the relation.
+     */
     private void addFamilyConnectionInternal(FamilyRelation relation) {
         for (FamilyRelation existing : familyConnections) {
             if (existing.equals(relation)) {
@@ -285,6 +321,12 @@ public class DisasterVictim extends Person {
         this.familyConnections = updated;
     }
 
+    /**
+     * Adds a medical record to the victim's list of medical records.
+     * 
+     * @param record The medical record to add.
+     * @throws IllegalArgumentException if the record is null
+     */
     public void addMedicalRecord(MedicalRecord record) {
         if (record == null) {
             throw new IllegalArgumentException("Medical record cannot be null");
@@ -383,6 +425,12 @@ public class DisasterVictim extends Person {
         this.gender = properCaseOption;
     }
 
+    /** 
+     * Loads the gender from the database, handling both standard options and custom specified.
+     * 
+     * @param gender The gender string retrieved
+
+     */
     public void loadGenderFromDB(String gender) {
         if (gender == null || gender.trim().isEmpty()) {
             this.gender = null;

@@ -4,6 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Controller class for managing inquiries in the disaster victim management system. 
+ * Provides a menu-driven interface for users to view, add, update, and delete inquiries, 
+ * as well as view inquiries by inquirer or subject person. Interacts with the InquiryService 
+ * class to perform operations on the database and handles user input validation and error handling.
+ */
 public class InquiryController {
     private final InquiryService service;
     private final Scanner scanner;
@@ -14,7 +20,16 @@ public class InquiryController {
         this.scanner = scanner;
     }
 
-    // inquiry menu
+    /**
+     * Displays the inquiry management menu and handles user input to perform various operations related to inquiries, 
+     * such as viewing all inquiries, viewing inquiries by inquirer or subject person, adding a new inquiry, updating inquiry 
+     * details or subject, and deleting an inquiry. The method continues to display the menu until the user chooses to exit. 
+     * It also includes error handling for invalid input and operation failures.
+     * 
+     * @throws IllegalArgumentException if the user input is invalid (e.g., non-numeric input for IDs, blank details)
+     * @throws IllegalStateException if the selected inquiry does not exist when attempting to update or delete
+     * @throws RuntimeException if there is an error performing the database operations through the Inquiry
+     */
     public void menu() {
         boolean running = true;
 
@@ -69,7 +84,9 @@ public class InquiryController {
         }
     }
 
-    // view all inquiries
+    /**
+     * Views all inquiries in the system, displaying the ID, inquirer name, subject name, inquiry date, and details for each inquiry.   
+     */
     public void viewAllInquiries() {
         List<Inquiry> inquiries = service.getAllInquiries();
 
@@ -86,7 +103,10 @@ public class InquiryController {
         }
     }
 
-    // view inquiries by inquirer
+    /**
+     * Views inquiries by a specific inquirer, prompting the user to enter the inquirer's person ID and displaying the ID,
+     * inquirer name, subject name, inquiry date, and details for each matching inquiry.    
+     */
     public void viewInquiriesByInquirer() {
         System.out.println();
         System.out.println("----------- Inquiries By Inquirer -----------");
@@ -104,7 +124,10 @@ public class InquiryController {
         }
     }
 
-    // view inquiries by subject person
+    /**
+     * Views inquiries by a specific subject person, prompting the user to enter the subject person's person ID and displaying the ID,
+     * inquirer name, subject name, inquiry date, and details for each matching inquiry.    
+     */
     public void viewInquiriesBySubjectPerson() {
         System.out.println();
         System.out.println("----------- Inquiries By Subject Person -----------");
@@ -122,7 +145,10 @@ public class InquiryController {
         }
     }
 
-    // add inquiry
+    /**
+     * Adds a new inquiry to the system, prompting the user to enter the inquirer's person ID, 
+     * subject person's person ID (optional), and inquiry details.    
+     */
     public void addInquiry() {
         System.out.println();
         System.out.println("----------- Add Inquiry -----------");
@@ -144,7 +170,9 @@ public class InquiryController {
         printInquirySummary(inquiry);
     }
 
-    // update inquiry details
+    /**
+     * Updates the details of an existing inquiry, prompting the user to select an inquiry and enter new details.    
+     */
     public void updateInquiryDetails() {
         System.out.println();
         System.out.println("----------- Update Inquiry Details -----------");
@@ -160,7 +188,9 @@ public class InquiryController {
         System.out.println("Inquiry updated successfully.");
     }
 
-    // update inquiry subject
+    /**
+     * Updates the subject person of an existing inquiry, prompting the user to select an inquiry and enter a new subject person ID.    
+     */
     public void updateInquirySubject() {
         System.out.println();
         System.out.println("----------- Update Inquiry Subject -----------");
@@ -182,7 +212,9 @@ public class InquiryController {
         System.out.println("Inquiry subject updated successfully.");
     }
 
-    // delete inquiry
+    /**
+     * Deletes an existing inquiry, prompting the user to select an inquiry and confirm the deletion.
+     */
     public void deleteInquiry() {
         System.out.println();
         System.out.println("----------- Delete Inquiry -----------");
@@ -204,7 +236,11 @@ public class InquiryController {
 
     }
 
-    // select inquiry by id
+    /**
+     * Selects an inquiry by its ID, prompting the user to enter the inquiry ID and returning the corresponding inquiry object.
+     * 
+     * @return the selected Inquiry object, or null if no inquiry is found with the entered ID
+     */
     private Inquiry selectInquiry() {
         List<Inquiry> inquiries = service.getAllInquiries();
 
@@ -228,7 +264,11 @@ public class InquiryController {
         return inquiry;
     }
 
-    // print inquiry info
+    /**
+     * Prints a summary of an inquiry, including the ID, inquirer name, subject name, inquiry date, and details.
+     * 
+     * @param inquiry the Inquiry object for which to print the summary
+     */
     private void printInquirySummary(Inquiry inquiry) {
         String inquirerName = formatPersonName(inquiry.getInquirer());
         String subjectName = formatPersonName(inquiry.getSubjectPerson());
@@ -237,6 +277,12 @@ public class InquiryController {
                             + " | Date: " + inquiry.getInquiryDate() + " | Details: " + inquiry.getDetails());
     }
 
+    /**
+     * Formats a person's name for display, using their first and last name if available, or their person ID if the name is not available.
+     * 
+     * @param person the Person object for which to format the name
+     * @return a string representing the person's name for display
+     */
     private String formatPersonName(Person person) {
         if (person == null) {
             return "Unknown";
@@ -256,7 +302,12 @@ public class InquiryController {
         return firstName + " " + lastName;
     }
 
-    // validate inputs
+    /**
+     * Reads an integer input from the user, prompting with the provided message. Continues to prompt until a valid integer is entered. 
+     * 
+     * @param prompt the message to display when asking for input
+     * @return the integer value entered by the user
+     */
     private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -270,6 +321,12 @@ public class InquiryController {
         }
     }
 
+    /**
+     * Reads an optional integer input from the user, prompting with the provided message. Continues to prompt until a valid integer is entered or the user leaves it blank.
+     * 
+     * @param prompt the message to display when asking for input
+     * @return the Integer value entered by the user, or null if the user leaves it blank
+     */
     private Integer readOptionalInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -287,6 +344,12 @@ public class InquiryController {
         }
     }
 
+    /**
+     * Reads a required string input from the user, prompting with the provided message. Continues to prompt until a non-blank string is entered.
+     * 
+     * @param prompt the message to display when asking for input
+     * @return the string value entered by the user
+     */
     private String readRequiredString(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -300,6 +363,12 @@ public class InquiryController {
         }
     }
 
+    /**
+     * Prompts the user to confirm an action with a yes or no response. Continues to prompt until the user enters a valid response (Y/N).
+     * 
+     * @param prompt the message to display when asking for confirmation
+     * @return true if the user confirms with Y or yes, false if the user declines with N or no
+     */
     private boolean confirm(String prompt) {
         while (true) {
             System.out.print(prompt);

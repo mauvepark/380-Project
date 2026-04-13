@@ -1,17 +1,34 @@
 package edu.ucalgary.oop;
 
+/**
+ * Represents a skill that can be associated with a person in the disaster
+ * victim management system.
+ * Stores the skill's identifier, name, and category.
+ */
 public class Skill {
     private int id;
     private String skillName;
     private String category;
 
-    // constructors
+    /**
+     * Creates a skill with a known identifier.
+     *
+     * @param id the unique identifier for the skill
+     * @param skillName the name of the skill
+     * @param category the category the skill belongs to
+     */
     public Skill(int id, String skillName, String category) {
         setId(id);
         setCategory(category);
         setSkillName(skillName);
     }
 
+    /**
+     * Creates a skill without assigning an identifier.
+     *
+     * @param skillName the name of the skill
+     * @param category the category the skill belongs to
+     */
     public Skill(String skillName, String category) {
         setCategory(category);
         setSkillName(skillName);

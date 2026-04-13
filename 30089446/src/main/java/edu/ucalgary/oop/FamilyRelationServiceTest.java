@@ -8,6 +8,10 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the FamilyRelationService class.
+ * These tests check relationship creation, updates, deletion, and validation.
+ */
 public class FamilyRelationServiceTest {
 
     private FamilyRelationService service;

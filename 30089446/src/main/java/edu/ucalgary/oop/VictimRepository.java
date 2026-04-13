@@ -2,15 +2,31 @@ package edu.ucalgary.oop;
 
 import java.sql.*;
 
+/**
+ * Repository class for managing victims in the database.
+ * This class handles inserting, updating, deleting, and checking victim records.
+ */
 public class VictimRepository {
     private final Connection dbConnect;
 
-    // constructor
+    /**
+     * Constructor for VictimRepository.
+     *
+     * @param dbConnect the database connection used for victim queries
+     */
     public VictimRepository(Connection dbConnect) {
         this.dbConnect = dbConnect;
     }
 
-    // add new person
+    /**
+     * Inserts a new person into the Person table.
+     *
+     * @param firstName the first name
+     * @param lastName the last name
+     * @param comments extra comments
+     * @return the ID of the new person
+     * @throws RuntimeException if the person cannot be inserted
+     */
     public int insertPerson(String firstName, String lastName, String comments) {
         String query = "INSERT INTO Person (first_name, last_name, comments) VALUES (?, ?, ?) RETURNING id";
 
@@ -31,7 +47,17 @@ public class VictimRepository {
         throw new RuntimeException("Could not insert person.");
     }
 
-    // add new disaster victim
+    /**
+     * Inserts a new disaster victim into the DisasterVictim table.
+     *
+     * @param personId the related person ID
+     * @param dateOfBirth the victim's birthdate
+     * @param approximateAge the victim's approximate age
+     * @param gender the victim's gender
+     * @param entryDate the entry date
+     * @param locationId the location ID
+     * @throws RuntimeException if the victim cannot be inserted
+     */
     public void insertDisasterVictim(int personId, java.time.LocalDate dateOfBirth, Integer approximateAge, String gender, java.time.LocalDate entryDate, Integer locationId) {
         String query = "INSERT INTO DisasterVictim (person_id, date_of_birth, approximate_age, gender, entry_date, location_id, is_soft_deleted) VALUES (?, ?, ?, ?, ?, ?, FALSE)";
 
@@ -65,7 +91,14 @@ public class VictimRepository {
         }
     }
 
-    // update victim name
+    /**
+     * Updates a victim's name in the Person table.
+     *
+     * @param personId the person ID
+     * @param newFirstName the new first name
+     * @param newLastName the new last name
+     * @throws RuntimeException if the victim name cannot be updated
+     */
     public void updateVictimName(int personId, String newFirstName, String newLastName) {
         String query = "UPDATE Person SET first_name = ?, last_name = ? WHERE id = ?";
 
@@ -83,7 +116,14 @@ public class VictimRepository {
         }
     }
 
-    // update victim age
+    /**
+     * Updates a victim's age information.
+     *
+     * @param personId the person ID
+     * @param dateOfBirth the new birthdate
+     * @param approximateAge the new approximate age
+     * @throws RuntimeException if the age information cannot be updated
+     */
     public void updateVictimAgeInfo(int personId, java.time.LocalDate dateOfBirth, Integer approximateAge) {
         String query = "UPDATE DisasterVictim SET date_of_birth = ?, approximate_age = ? WHERE person_id = ?";
 
@@ -111,7 +151,12 @@ public class VictimRepository {
         }
     }
 
-    // soft delete victim
+    /**
+     * Soft deletes a victim by marking them as deleted.
+     *
+     * @param personId the person ID
+     * @throws RuntimeException if the victim cannot be soft deleted
+     */
     public void softDeleteVictim(int personId) {
         String query = "UPDATE DisasterVictim SET is_soft_deleted = TRUE WHERE person_id = ?";
 
@@ -127,7 +172,12 @@ public class VictimRepository {
         }
     }
 
-    // hard delete victim
+    /**
+     * Hard deletes a victim and related records from the database.
+     *
+     * @param personId the person ID
+     * @throws RuntimeException if the victim cannot be hard deleted
+     */
     public void hardDeleteVictim(int personId) {
         String deleteInquiry = "DELETE FROM Inquiry WHERE inquirer_id = ? OR subject_person_id = ?";
         String deleteRelationships = "DELETE FROM FamilyRelationship WHERE person_one_id = ? OR person_two_id = ?";
@@ -196,7 +246,12 @@ public class VictimRepository {
         }
     }
 
-    // get active victims
+    /**
+     * Gets all active victims from the database.
+     *
+     * @return a ResultSet of active victims
+     * @throws RuntimeException if the victims cannot be retrieved
+     */
     public ResultSet getActiveVictims() {
         String query = "SELECT p.id, p.first_name, p.last_name, p.comments, dv.date_of_birth, dv.approximate_age, dv.gender, dv.entry_date, dv.location_id FROM Person p JOIN DisasterVictim dv ON p.id = dv.person_id WHERE dv.is_soft_deleted = FALSE ORDER BY p.id";
 
@@ -208,6 +263,13 @@ public class VictimRepository {
         }
     }
 
+    /**
+     * Checks if a person is an active victim.
+     *
+     * @param personId the person ID
+     * @return true if the victim exists and is active, false otherwise
+     * @throws RuntimeException if the victim status cannot be checked
+     */
     public boolean isActiveVictim(int personId) {
         String query = "SELECT 1 FROM DisasterVictim WHERE person_id = ? AND is_soft_deleted = FALSE";
 

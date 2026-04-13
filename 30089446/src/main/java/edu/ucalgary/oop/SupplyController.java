@@ -3,17 +3,31 @@ package edu.ucalgary.oop;
 import java.time.*;
 import java.util.*;
 
+/**
+ * Controller class for managing supplies.
+ * This class lets the user view, add, update, allocate, unallocate, and delete supplies through a menu.
+ */
 public class SupplyController {
     private final SupplyService service;
     private final Scanner scanner;
 
-    // constructor
+    /**
+     * Constructor for SupplyController.
+     * Sets up the supply service and scanner for user input.
+     * 
+     * @param scanner
+     */
     public SupplyController(Scanner scanner) {
         this.service = new SupplyService();
         this.scanner = scanner;
     }
 
-    // supply menu
+    /**
+     * Displays the supply management menu and handles user choices.
+     * The menu keeps running until the user chooses to go back.
+     * 
+     * @throws RuntimeException if an unexpected error happens during a menu action
+     */
     public void menu() {
         boolean running = true;
 
@@ -76,7 +90,12 @@ public class SupplyController {
         }
     }
 
-    // view all supplies
+    /**
+     * Displays all supplies in the system.
+     * If there are no supplies, the user is informed.
+     * 
+     * @throws RuntimeException if the supplies cannot be retrieved
+     */
     public void viewAllSupplies() {
         List<Supply> supplies = service.getAllSupplies();
 
@@ -93,7 +112,12 @@ public class SupplyController {
         }
     }
 
-    // view supplies by location
+    /**
+     * Displays all supplies for a given location.
+     * The user is prompted to enter a location ID first.
+     * 
+     * @throws RuntimeException if the supplies cannot be retrieved for the location
+     */
     public void viewSuppliesByLocation() {
         System.out.println();
         System.out.println("----------- Supplies By Location -----------");
@@ -111,7 +135,12 @@ public class SupplyController {
         }
     }
 
-    // view available inventory for allocation
+    /**
+     * Displays supplies at a location that can still be allocated.
+     * Expired supplies at that location are shown as a warning first.
+     * 
+     * @throws RuntimeException if the available inventory cannot be retrieved
+     */
     public void viewAvailableInventoryForAllocation() {
         System.out.println();
         System.out.println("----------- Available Inventory For Allocation -----------");
@@ -131,7 +160,12 @@ public class SupplyController {
         }
     }
 
-    // view expired supplies by location
+    /**
+     * Displays expired supplies for a given location.
+     * The user is prompted to enter a location ID first.
+     * 
+     * @throws RuntimeException if the expired supplies cannot be retrieved
+     */
     public void viewExpiredSuppliesByLocation() {
         System.out.println();
         System.out.println("----------- Expired Supplies By Location -----------");
@@ -149,7 +183,12 @@ public class SupplyController {
         }
     }
 
-    // add supply
+    /**
+     * Prompts the user for supply information and adds a new supply.
+     * The user can choose whether the supply is perishable and enter an expiry date if needed.
+     * 
+     * @throws RuntimeException if the supply cannot be added
+     */
     public void addSupply() {
         System.out.println();
         System.out.println("----------- Add Supply -----------");
@@ -198,7 +237,12 @@ public class SupplyController {
         printSupplySummary(savedSupply);
     }
 
-    // update supply
+    /**
+     * Updates an existing supply after the user selects one.
+     * The user is prompted for the new supply details.
+     * 
+     * @throws RuntimeException if the supply cannot be updated
+     */
     public void updateSupply() {
         System.out.println();
         System.out.println("----------- Update Supply -----------");
@@ -247,7 +291,12 @@ public class SupplyController {
         System.out.println("Supply updated successfully.");
     }
 
-    // allocate supply
+    /**
+     * Allocates an available supply to a victim.
+     * The user chooses a location, a supply, and a victim ID.
+     * 
+     * @throws RuntimeException if the supply cannot be allocated
+     */
     public void allocateSupply() {
         System.out.println();
         System.out.println("----------- Allocate Supply -----------");
@@ -275,7 +324,12 @@ public class SupplyController {
         System.out.println("Supply allocated successfully.");
     }
 
-    // unallocate supply
+    /**
+     * Removes a supply allocation from a victim.
+     * The user first selects a supply to unallocate.
+     * 
+     * @throws RuntimeException if the supply cannot be unallocated
+     */
     public void unallocateSupply() {
         System.out.println();
         System.out.println("----------- Unallocate Supply -----------");
@@ -295,7 +349,12 @@ public class SupplyController {
         System.out.println("Supply unallocated successfully.");
     }
 
-    // delete supply
+    /**
+     * Deletes a supply from the system after confirmation.
+     * This action permanently removes the supply from the database.
+     * 
+     * @throws RuntimeException if the supply cannot be deleted
+     */
     public void deleteSupply() {
         System.out.println();
         System.out.println("----------- Delete Supply -----------");
@@ -316,7 +375,12 @@ public class SupplyController {
         System.out.println("Supply deleted successfully.");
     }
 
-    // select supply by id
+    /**
+     * Displays all supplies and lets the user choose one by ID.
+     * 
+     * @return the selected supply, or null if no matching supply is found
+     * @throws RuntimeException if the supplies cannot be retrieved
+     */
     private Supply selectSupply() {
         List<Supply> supplies = service.getAllSupplies();
 
@@ -341,7 +405,12 @@ public class SupplyController {
         return null;
     }
 
-    // warn about expired supplies
+    /**
+     * Displays a warning if a location has expired supplies.
+     * 
+     * @param locationId the location to check
+     * @throws RuntimeException if the expired supplies cannot be retrieved
+     */
     private void warnExpiredSupplies(int locationId) {
         List<Supply> expiredSupplies = service.getExpiredSuppliesByLocation(locationId);
 
@@ -354,7 +423,11 @@ public class SupplyController {
         }
     }
 
-    // print supply info
+    /**
+     * Prints a one-line summary of a supply.
+     * 
+     * @param supply the supply to display
+     */
     private void printSupplySummary(Supply supply) {
         String victimId = supply.getVictimId() == null ? "None" : String.valueOf(supply.getVictimId());
         String expiryDate = supply.getExpiryDate() == null ? "N/A" : supply.getExpiryDate().toString();
@@ -370,7 +443,13 @@ public class SupplyController {
                             + " | Description: " + description);
         }
 
-    // validate inputs
+    /**
+     * Reads an integer from the user.
+     * Keeps asking until the user enters a valid number.
+     * 
+     * @param prompt the message shown to the user
+     * @return the integer entered by the user
+     */
     private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -384,6 +463,13 @@ public class SupplyController {
         }
     }
 
+    /**
+     * Reads an optional integer from the user.
+     * Blank input is allowed and returns null.
+     * 
+     * @param prompt the message shown to the user
+     * @return the integer entered by the user, or null if left blank
+     */
     private Integer readOptionalInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -401,6 +487,13 @@ public class SupplyController {
         }
     }
 
+    /**
+     * Reads a date from the user.
+     * Keeps asking until the user enters a valid date in YYYY-MM-DD format.
+     * 
+     * @param prompt the message shown to the user
+     * @return the date entered by the user
+     */
     private LocalDate readDate(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -414,6 +507,13 @@ public class SupplyController {
         }
     }
 
+    /**
+     * Reads a required string from the user.
+     * Keeps asking until the user enters a non-blank value.
+     * 
+     * @param prompt the message shown to the user
+     * @return the string entered by the user
+     */
     private String readRequiredString(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -427,11 +527,23 @@ public class SupplyController {
         }
     }
 
+    /**
+     * Reads an optional string from the user.
+     * 
+     * @param prompt the message shown to the user
+     * @return the string entered by the user
+     */
     private String readOptionalString(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
     }
 
+    /**
+     * Asks the user to confirm an action with yes or no.
+     * 
+     * @param prompt the message shown to the user
+     * @return true if the user confirms, false otherwise
+     */
     private boolean confirm(String prompt) {
         while (true) {
             System.out.print(prompt);

@@ -7,6 +7,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class to manage inquiries related to disaster victims. 
+ * This class provides methods to add, update, delete, and retrieve inquiries from the database. 
+ * It uses the InquiryRepository for database operations and ActionLogger to log all actions performed on inquiries.
+ */
 public class InquiryService {
     private final InquiryRepository repository;
     private final ActionLogger logger;
@@ -22,7 +27,17 @@ public class InquiryService {
         this.logger = logger;
     }
 
-    // add a new inquiry
+    /**
+     * Adds a new inquiry to the database with the provided inquirer, subject person, inquiry date, and details.
+     * Validates the input parameters and logs the action after successfully adding the inquiry.
+     * 
+     * @param inquirer the Person object representing the inquirer (required)
+     * @param subjectPerson the Person object representing the subject of the inquiry (optional, can be null)
+     * @param inquiryDate the date and time when the inquiry was made (required, cannot be in the future)
+     * @param details additional details about the inquiry (required, cannot be blank)
+     * @return an Inquiry object representing the newly created inquiry
+     * @throws IllegalArgumentException if any of the required parameters are invalid
+     */
     public Inquiry addInquiry(Person inquirer, Person subjectPerson, LocalDateTime inquiryDate, String details) {
         if (inquirer == null) {
             throw new IllegalArgumentException("Inquirer cannot be null.");
@@ -48,7 +63,14 @@ public class InquiryService {
         return inquiry;
     }
 
-    // update inquiry details
+    /**
+     * Updates the details of an existing inquiry. 
+     * Validates the input parameters and logs the action after successfully updating the inquiry.
+     * 
+     * @param inquiry the Inquiry object representing the inquiry to update
+     * @param newDetails the new details for the inquiry
+     * @throws IllegalArgumentException if the inquiry is null or if the new details are invalid
+     */
     public void updateInquiryDetails(Inquiry inquiry, String newDetails) {
         if (inquiry == null) {
             throw new IllegalArgumentException("Inquiry cannot be null.");
@@ -65,7 +87,14 @@ public class InquiryService {
         logger.log("UPDATED", "inquiry " + inquiry.getId() + " | Details: " + oldDetails + " -> " + newDetails);
     }
 
-    // update inquiry subject person
+    /**
+     * Updates the subject person of an existing inquiry.
+     * Validates the input parameters and logs the action after successfully updating the inquiry.
+     * 
+     * @param inquiry the Inquiry object representing the inquiry to update
+     * @param newSubjectPerson the new Person object representing the subject of the inquiry (can be null to set subject to null)
+     * @throws IllegalArgumentException if the inquiry is null
+     */
     public void updateInquirySubject(Inquiry inquiry, Person newSubjectPerson) {
         if (inquiry == null) {
             throw new IllegalArgumentException("Inquiry cannot be null.");
@@ -86,7 +115,13 @@ public class InquiryService {
         );
     }
 
-    // delete inquiry
+    /**
+     * Deletes an existing inquiry from the database. 
+     * Validates the input parameter and logs the action after successfully deleting the inquiry.
+     * 
+     * @param inquiry the Inquiry object representing the inquiry to delete
+     * @throws IllegalArgumentException if the inquiry is null
+     */
     public void deleteInquiry(Inquiry inquiry) {
         if (inquiry == null) {
             throw new IllegalArgumentException("Inquiry cannot be null.");
@@ -97,7 +132,13 @@ public class InquiryService {
         logger.log("DELETED", "inquiry " + inquiry.getId() + " | Inquirer: " + inquiry.getInquirer().getFirstName() + " " + inquiry.getInquirer().getLastName());
     }
 
-    // get all inquiries
+    /**
+     * Retrieves all inquiries from the database, including the inquirer and subject person names. 
+     * The results are ordered by inquiry date (newest first) and then by ID.
+     * 
+     * @return a list of all inquiries
+     * @throws RuntimeException if there is an error retrieving the inquiries from the database
+     */
     public List<Inquiry> getAllInquiries() {
         List<Inquiry> inquiries = new ArrayList<>();
 
@@ -112,7 +153,14 @@ public class InquiryService {
         return inquiries;
     }
 
-    // get inquiries by inquirer
+    /** 
+     * Retrieves all inquiries made by a specific inquirer from the database, including the inquirer and subject person names.
+     * 
+     * @param inquirerId the ID of the inquirer for whom to retrieve inquiries
+     * @return a list of inquiries made by the specified inquirer
+     * @throws IllegalArgumentException if the inquirer ID is invalid
+     * @throws RuntimeException if there is an error retrieving the inquiries from the database
+     */
     public List<Inquiry> getInquiriesByInquirer(int inquirerId) {
         if (inquirerId <= 0) {
             throw new IllegalArgumentException("Inquirer ID must be positive.");
@@ -131,7 +179,15 @@ public class InquiryService {
         return inquiries;
     }
 
-    // get inquiries by subject person
+    /**
+     * Retrieves all inquiries about a specific subject person from the database, including the inquirer and subject person names.
+     * The results are ordered by inquiry date (newest first) and then by ID.
+     * 
+     * @param subjectPersonId the ID of the subject person for whom to retrieve inquiries
+     * @return a list of inquiries about the specified subject person
+     * @throws IllegalArgumentException if the subject person ID is invalid
+     * @throws RuntimeException if there is an error retrieving the inquiries from the database
+     */
     public List<Inquiry> getInquiriesBySubjectPerson(int subjectPersonId) {
         if (subjectPersonId <= 0) {
             throw new IllegalArgumentException("Subject person ID must be positive.");
@@ -150,7 +206,14 @@ public class InquiryService {
         return inquiries;
     }
 
-    // get one inquiry by id
+    /**
+     * Retrieves a specific inquiry from the database based on its ID, including the inquirer and subject person names.
+     * 
+     * @param inquiryId the ID of the inquiry to retrieve
+     * @return an Inquiry object representing the retrieved inquiry, or null if no inquiry is found with the given ID
+     * @throws IllegalArgumentException if the inquiry ID is invalid
+     * @throws RuntimeException if there is an error retrieving the inquiry from the database
+     */
     public Inquiry getInquiryById(int inquiryId) {
         if (inquiryId <= 0) {
             throw new IllegalArgumentException("Inquiry ID must be positive.");
@@ -167,7 +230,13 @@ public class InquiryService {
         return null;
     }
 
-    // map result to inquiry object
+    /** 
+     * Helper method to map a ResultSet row to an Inquiry object. 
+     * This method assumes that the ResultSet is already positioned at the correct row.
+     * 
+     * @param rs the ResultSet containing the inquiry data, including inquirer and subject person names
+     * @return an Inquiry object representing the data in the current row of the ResultSet
+     */
     private Inquiry mapRowToInquiry(ResultSet rs) throws SQLException {
         int inquiryId = rs.getInt("id");
 

@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the Inquiry class.
+ * These tests check object creation and validation for inquiries.
+ */
 public class InquiryTest {
 
     private Inquiry inquiry;

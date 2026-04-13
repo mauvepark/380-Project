@@ -1,5 +1,9 @@
 package edu.ucalgary.oop;
 
+/**
+ * Class to represent a location where disaster victims can be housed and supplies can be stored.
+ * Each location has a unique ID, a name, an address, and can have multiple occupants
+ */
 public class Location {
     private int id;
     private String name;
@@ -7,7 +11,13 @@ public class Location {
     private DisasterVictim[] occupants;
     private Supply[] supplies;
 
-    // constructors
+    /**
+     * Constructor for Location with ID. Validates the input parameters and initializes the occupants and supplies arrays.
+     * 
+     * @param id the unique ID for the location (must be non-negative)
+     * @param name the name of the location (cannot be null or empty)
+     * @param address the address of the location (cannot be null or empty)
+     */
     public Location(int id, String name, String address) {
         setId(id);
         setName(name);
@@ -16,6 +26,12 @@ public class Location {
         this.supplies = new Supply[0];
     }
 
+    /**
+     * Constructor for Location without ID. Validates the input parameters and initializes the occupants and supplies arrays.
+     * 
+     * @param name the name of the location (cannot be null or empty)
+     * @param address the address of the location (cannot be null or empty)
+     */
     public Location(String name, String address) {
         setName(name);
         setAddress(address);
@@ -73,7 +89,12 @@ public class Location {
         this.supplies = supplies != null ? supplies.clone() : new Supply[0];
     }
 
-    // add occupant at location
+    /**
+     * Adds an occupant (disaster victim) to the location. Validates the input parameter and updates the occupant's location reference.
+     * 
+     * @param occupant the DisasterVictim object representing the occupant to add (cannot be null)
+     * @throws IllegalArgumentException if the occupant is null
+     */
     public void addOccupant(DisasterVictim occupant) {
         if (occupant == null) {
             throw new IllegalArgumentException("Occupant cannot be null");
@@ -87,7 +108,13 @@ public class Location {
         occupant.setLocation(this);
     }
 
-    // remove occupant from location
+    /**
+     * Removes an occupant (disaster victim) from the location. 
+     * Validates the input parameter and updates the occupant's location reference if necessary.
+     * 
+     * @param occupant the DisasterVictim object representing the occupant to remove (cannot be null)
+     * @throws IllegalArgumentException if the occupant is null or not found in the location
+     */
     public void removeOccupant(DisasterVictim occupant) {
         if (occupant == null) {
             throw new IllegalArgumentException("Occupant cannot be null");
@@ -119,7 +146,12 @@ public class Location {
 
     }
 
-    // add supply to location
+    /**
+     * Adds a supply to the location. Validates the input parameter and updates the supply's location reference.
+     * 
+     * @param supply the Supply object representing the supply to add (cannot be null)
+     * @throws IllegalArgumentException if the supply is null
+     */
     public void addSupply(Supply supply) {
         if (supply == null) {
             throw new IllegalArgumentException("Supply cannot be null");
@@ -133,7 +165,12 @@ public class Location {
         supply.setLocation(this); // 👈 IMPORTANT
     }
 
-    // remove supply from location
+    /**
+     * Removes a supply from the location. Validates the input parameter and updates the supply's location reference if necessary.
+     * 
+     * @param supply the Supply object representing the supply to remove (cannot be null)
+     * @throws IllegalArgumentException if the supply is null or not found in the location
+     */
     public void removeSupply(Supply supply) {
         if (supply == null) {
             throw new IllegalArgumentException("Supply cannot be null");
@@ -158,7 +195,7 @@ public class Location {
         System.arraycopy(supplies, index + 1, newSupplies, index, supplies.length - index - 1);
         
         this.supplies = newSupplies;
-        
+
         if (supply.getLocation() == this) {
             supply.setLocation(null);
         }

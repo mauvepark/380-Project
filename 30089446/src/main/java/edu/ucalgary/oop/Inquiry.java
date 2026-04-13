@@ -2,6 +2,10 @@ package edu.ucalgary.oop;
 
 import java.time.LocalDateTime;
 
+/**
+ * Class to represent an inquiry made by a person (inquirer) about another person (subject) in the disaster victim management system.
+ * Each inquiry has a unique ID, the inquirer and subject as Person objects, the date and time of the inquiry, and details about the inquiry.
+ */
 public class Inquiry {
     private int id;
     private Person inquirer;

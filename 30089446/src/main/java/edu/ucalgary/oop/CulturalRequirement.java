@@ -1,5 +1,10 @@
 package edu.ucalgary.oop;
 
+/**
+ * Class to represent a specific cultural requirement for a disaster victim. 
+ * Each requirement is associated with a category (e.g., "Dietary", "Religious") and 
+ * a specific option within that category (e.g., "Halal", "Kosher").
+ */
 public class CulturalRequirement {
     private int victimId;
     private String category;

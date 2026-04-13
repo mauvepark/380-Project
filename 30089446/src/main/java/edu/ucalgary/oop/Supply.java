@@ -2,6 +2,10 @@ package edu.ucalgary.oop;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a supply item in the system.
+ * A supply can be stored at a location, assigned to a victim, and may have an expiry date.
+ */
 public class Supply {
     private int id;
     private String supplyType;
@@ -12,7 +16,17 @@ public class Supply {
     private String description;
     private Location location;
 
-    // constructors
+    /**
+     * Creates a supply with a known ID.
+     *
+     * @param id the supply ID
+     * @param supplyType the type of supply
+     * @param locationId the ID of the location storing the supply
+     * @param victimId the ID of the victim the supply is assigned to
+     * @param expiryDate the expiry date of the supply
+     * @param allocationDate the date the supply was assigned
+     * @param description extra details about the supply
+     */
     public Supply(int id, String supplyType, Integer locationId, Integer victimId, 
                   LocalDate expiryDate, LocalDate allocationDate, String description) {
         setSupplyType(supplyType); // for validation
@@ -24,7 +38,16 @@ public class Supply {
         this.description = description;
     }
 
-    // constructor no ID
+    /**
+     * Creates a supply without an ID.
+     *
+     * @param supplyType the type of supply
+     * @param locationId the ID of the location storing the supply
+     * @param victimId the ID of the victim the supply is assigned to
+     * @param expiryDate the expiry date of the supply
+     * @param allocationDate the date the supply was assigned
+     * @param description extra details about the supply
+     */
     public Supply(String supplyType, Integer locationId, Integer victimId,
                   LocalDate expiryDate, LocalDate allocationDate, String description) {
         setSupplyType(supplyType); // for validation
@@ -105,15 +128,29 @@ public class Supply {
         this.description = description;
     }
 
-    // NEW: methods for expiry tracking
+    /**
+     * Checks if the supply is perishable.
+     *
+     * @return true if the supply has an expiry date, false otherwise
+     */
     public boolean isPerishable() {
         return expiryDate != null;
     }
 
+    /**
+     * Checks if the supply is expired.
+     *
+     * @return true if the expiry date is before today, false otherwise
+     */
     public boolean isExpired() {
         return expiryDate != null && expiryDate.isBefore(LocalDate.now());
     }
 
+    /**
+     * Checks if the supply is currently allocated to a victim.
+     *
+     * @return true if the supply has a victim ID, false otherwise
+     */
     public boolean isAllocated() {
         return victimId != null;
     }

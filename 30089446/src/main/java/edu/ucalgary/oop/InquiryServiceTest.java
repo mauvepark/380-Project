@@ -10,6 +10,10 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the InquiryService class.
+ * These tests check inquiry creation, updates, deletion, and validation.
+ */
 public class InquiryServiceTest {
 
     private InquiryService service;

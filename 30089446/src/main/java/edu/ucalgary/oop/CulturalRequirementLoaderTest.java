@@ -5,6 +5,10 @@ import static org.junit.Assert.*;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Unit tests for the CulturalRequirementLoader class.
+ * These tests check that cultural requirement options are loaded correctly.
+ */
 public class CulturalRequirementLoaderTest {
 
     @Test

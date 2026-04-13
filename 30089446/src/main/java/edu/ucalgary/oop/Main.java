@@ -76,6 +76,14 @@ public class Main {
     System.out.println("Goodbye.");
   }
 
+  /**
+   * Utility method to read an integer from the user with a prompt. It will keep prompting until a valid integer is entered.
+   *
+   * @param scanner the Scanner object to read user input
+   * @param prompt the message to display to the user when asking for input
+   * @return the integer value entered by the user
+   * @throws RuntimeException if the user input cannot be parsed as an integer
+   */
   private static int readInt(Scanner scanner, String prompt) {
     while (true) {
       System.out.print(prompt);

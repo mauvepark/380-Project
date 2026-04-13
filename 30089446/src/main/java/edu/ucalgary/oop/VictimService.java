@@ -5,22 +5,48 @@ import java.time.LocalDate;
 import java.util.*;
 
 
+/**
+ * Service class for managing victims.
+ * This class handles victim validation, updates, deletion, and loading active victims.
+ */
 public class VictimService {
     private final VictimRepository repository;
     private final ActionLogger logger;
 
-    // constructor
+    /**
+     * Constructor for VictimService.
+     * Uses the shared database connection and logger.
+     */
     public VictimService() {
         this.repository = new VictimRepository(DatabaseManager.getInstance().getConnection());
         this.logger = ActionLogger.getInstance();
     }
 
+    /**
+     * Constructor for VictimService with dependency injection.
+     *
+     * @param repository the victim repository
+     * @param logger the action logger
+     */
     public VictimService(VictimRepository repository, ActionLogger logger) {
         this.repository = repository;
         this.logger = logger;
     }
 
-    // add a new victim to the database
+    /**
+     * Adds a new victim to the system.
+     *
+     * @param person the person information
+     * @param entryDate the entry date
+     * @param dateOfBirth the birthdate
+     * @param approximateAge the approximate age
+     * @param gender the selected gender option
+     * @param customGender a custom gender value if needed
+     * @param locationId the location ID
+     * @return the newly created victim
+     * @throws IllegalArgumentException if the victim data is invalid
+     * @throws RuntimeException if the victim cannot be added
+     */
     public DisasterVictim addVictim(Person person, LocalDate entryDate, LocalDate dateOfBirth, Integer approximateAge, String gender, String customGender, Integer locationId) {
         if (person == null) {
             throw new IllegalArgumentException("Person cannot be null.");
@@ -61,7 +87,15 @@ public class VictimService {
         return victim;
     }
 
-    // update victim name
+    /**
+     * Updates a victim's name.
+     *
+     * @param victim the victim to update
+     * @param newFirstName the new first name
+     * @param newLastName the new last name
+     * @throws IllegalArgumentException if the victim is null or the first name is blank
+     * @throws RuntimeException if the victim name cannot be updated
+     */
     public void updateVictimName(DisasterVictim victim, String newFirstName, String newLastName) {
         if (victim == null) {
             throw new IllegalArgumentException("Victim cannot be null.");
@@ -81,7 +115,16 @@ public class VictimService {
         logger.log("UPDATED", "disaster victim " + victim.getPersonId() + " | Name: " + oldName + " -> " + newFirstName + " " + newLastName);
     }
 
-    // update victim info 
+    /**
+     * Updates a victim's age information.
+     * The update must use either a birthdate or an approximate age, but not both.
+     *
+     * @param victim the victim to update
+     * @param dateOfBirth the new birthdate
+     * @param approximateAge the new approximate age
+     * @throws IllegalArgumentException if the input is invalid
+     * @throws RuntimeException if the victim age cannot be updated
+     */
     public void updateVictimAgeInfo(DisasterVictim victim, LocalDate dateOfBirth, Integer approximateAge) {
         if (victim == null) {
             throw new IllegalArgumentException("Victim cannot be null.");
@@ -105,7 +148,13 @@ public class VictimService {
         }
     }
 
-    // soft delete
+    /**
+     * Soft deletes a victim.
+     *
+     * @param victim the victim to soft delete
+     * @throws IllegalArgumentException if the victim is null
+     * @throws RuntimeException if the victim cannot be soft deleted
+     */
     public void softDeleteVictim(DisasterVictim victim) {
         if (victim == null) {
             throw new IllegalArgumentException("Victim cannot be null.");
@@ -116,7 +165,13 @@ public class VictimService {
         logger.log("SOFT DELETED", "disaster victim " + victim.getPersonId() + " | Name: " + victim.getFirstName() + " " + victim.getLastName());
     }
 
-    // hard delete
+    /**
+     * Hard deletes a victim.
+     *
+     * @param victim the victim to hard delete
+     * @throws IllegalArgumentException if the victim is null
+     * @throws RuntimeException if the victim cannot be hard deleted
+     */
     public void hardDeleteVictim(DisasterVictim victim) {
         if (victim == null) {
             throw new IllegalArgumentException("Victim cannot be null.");
@@ -127,7 +182,12 @@ public class VictimService {
         logger.log("DELETED", "disaster victim " + victim.getPersonId() + " | Name: " + victim.getFirstName() + " " + victim.getLastName());
     }
 
-    // get all active victims from the database
+    /**
+     * Gets all active victims from the database.
+     *
+     * @return a list of active victims
+     * @throws RuntimeException if the victims cannot be loaded
+     */
     public List<DisasterVictim> getActiveVictims() {
         List<DisasterVictim> victims = new ArrayList<>();
 

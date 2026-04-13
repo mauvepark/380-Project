@@ -2,6 +2,11 @@ package edu.ucalgary.oop;
 
 import java.util.*;
 
+/**
+ * Service class to manage the cultural and religious requirements of disaster victims. 
+ * This class provides methods to add, update, and remove cultural requirements for victims, 
+ * as well as retrieve the available options and existing requirements for a victim. 
+ */
 public class CulturalRequirementService {
     private final CulturalRequirementRepository repository;
     private final Map<String, Set<String>> options;
@@ -31,7 +36,16 @@ public class CulturalRequirementService {
         return repository.getRequirementsForVictim(victimId);
     }
 
-    // add requirment to a victim, no duplicate
+    /**
+     * Adds a new cultural requirement for a victim. 
+     * This method checks if the victim already has a requirement for the specified category and throws an exception if so.
+     * 
+     * @param victimId The ID of the victim for whom the requirement is being added.
+     * @param category The category of the requirement (e.g., "Dietary", "Religious").
+     * @param option The specific option for the requirement (e.g., "Halal", "Kosher").
+     * @throws IllegalArgumentException if the victim already has a requirement for the specified category or if the input is invalid.
+     * @throws RuntimeException if there is an error inserting the requirement into the database.
+     */
     public void addRequirement(int victimId, String category, String option) {
         validateVictimId(victimId);
         validateCategoryAndOption(category, option);
@@ -71,7 +85,15 @@ public class CulturalRequirementService {
         }
     }
 
-    // remove requirement for a victim
+    /**
+     * Removes an existing cultural requirement for a victim. 
+     * This method checks if the requirement exists before attempting to delete it.
+     * 
+     * @param victimId The ID of the victim for whom the requirement is being removed.
+     * @param category The category of the requirement being removed (e.g., "Dietary", "Religious").
+     * @throws IllegalArgumentException if the requirement does not exist for the victim or if the input is invalid.
+     * @throws RuntimeException if there is an error deleting the requirement from the database.
+     */
     public void removeRequirement(int victimId, String category) {
         validateVictimId(victimId);
 
@@ -88,14 +110,28 @@ public class CulturalRequirementService {
         logger.log("DELETED", "cultural requirement for victim " + victimId + " | Category: " + category);
     }
 
-    // get categories for UI
+    /**
+     * Checks if a victim already has a cultural requirement for a specific category. 
+     * This is used to prevent duplicate entries for the same category.
+     * 
+     * @throws IllegalArgumentException if the input is invalid.
+     * @throws RuntimeException if there is an error checking the requirement in the database.
+     * @return sorted list of categories for UI display.
+     */
     public List<String> getSortedCategories() {
         List<String> categories = new ArrayList<>(options.keySet());
         Collections.sort(categories);
         return categories;
     }
 
-    // get options for each category for UI
+    /**
+     * Gets the sorted options for a specific category for UI display.
+     * 
+     * @param category The category for which to get options.
+     * @return A list of sorted options for the specified category.
+     * @throws IllegalArgumentException if the input is invalid.
+     * @throws RuntimeException if there is an error checking the options in the database.
+     */
     public List<String> getSortedOptionsForCategory(String category) {
         if (category == null || category.isBlank()) {
             throw new IllegalArgumentException("Category cannot be null or blank");
@@ -111,14 +147,25 @@ public class CulturalRequirementService {
         return sorted;
     }
 
-    // validate victim id
+    /**
+     * Validates the victim ID.
+     * 
+     * @param victimId The ID of the victim to validate.
+     * @throws IllegalArgumentException if the victim ID is invalid.
+     */
     private void validateVictimId(int victimId) {
         if (victimId <= 0) {
             throw new IllegalArgumentException("Victim ID must be positive");
         }
     }
 
-    // validate category and option
+    /**
+     * Validates the category and option.
+     * 
+     * @param category The category to validate.
+     * @param option The option to validate.
+     * @throws IllegalArgumentException if the input is invalid.
+     */
     private void validateCategoryAndOption(String category, String option) {
         if (category == null || category.isBlank()) {
             throw new IllegalArgumentException("Category cannot be null or blank");

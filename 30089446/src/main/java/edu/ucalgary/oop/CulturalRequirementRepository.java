@@ -3,6 +3,9 @@ package edu.ucalgary.oop;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Repository class to manage the cultural and religious requirements of disaster victims in the database.
+ */
 public class CulturalRequirementRepository {
 
   private final Connection dbConnect;
@@ -12,7 +15,15 @@ public class CulturalRequirementRepository {
     this.dbConnect = dbConnect;
   }
 
-  // add requirement for victim
+  /**
+   * Inserts a new cultural requirement for a victim into the database.
+   * 
+   * @param victimId The ID of the victim for whom the requirement is being added.
+   * @param category The category of the requirement (e.g., "Dietary", "Religious").
+   * @param option The specific option for the requirement (e.g., "Halal", "Kosher").
+   * @throws IllegalArgumentException if the victim already has a requirement for the specified category.
+   * @throws RuntimeException if there is an error inserting the requirement into the database.
+   */
   public void insertRequirement(int victimId, String category, String option) {
     String query =
       "INSERT INTO CulturalRequirement (victim_id, requirement_category, requirement_option) VALUES (?, ?, ?)";
@@ -27,7 +38,14 @@ public class CulturalRequirementRepository {
     }
   }
 
-  // update requirement
+  /**
+   * Updates an existing cultural requirement for a victim in the database.
+   * 
+   * @param victimId The ID of the victim for whom the requirement is being updated.
+   * @param category The category of the requirement (e.g., "Dietary", "Religious").
+   * @param newOption The new option for the requirement (e.g., "Halal", "Kosher").
+   * @throws RuntimeException if there is an error updating the requirement in the database.
+   */
   public void updateRequirement(
     int victimId,
     String category,
@@ -55,7 +73,14 @@ public class CulturalRequirementRepository {
     }
   }
 
-  // delete requirement
+  /**
+   * Deletes a cultural requirement for a victim from the database.
+   * 
+   * @param victimId The ID of the victim for whom the requirement is being deleted.
+   * @param category The category of the requirement to be deleted (e.g., "Dietary", "Religious").
+   * @throws IllegalArgumentException if no requirement is found for the victim and category.
+   * @throws RuntimeException if there is an error deleting the requirement from the database.
+   */
   public void deleteRequirement(int victimId, String category) {
     String query =
       "DELETE FROM CulturalRequirement WHERE victim_id = ? AND requirement_category = ?";
@@ -78,7 +103,12 @@ public class CulturalRequirementRepository {
     }
   }
 
-  // delete all requirements for a victim
+  /**
+   * Deletes all cultural requirements for a victim from the database. This is used for hard deletion of a victim.
+   * 
+   * @param victimId The ID of the victim for whom all requirements are being deleted.
+   * @throws RuntimeException if there is an error deleting the requirements from the database.
+   */
   public void deleteAllRequirementsForVictim(int victimId) {
     String query = "DELETE FROM CulturalRequirement WHERE victim_id = ?";
 
@@ -102,7 +132,7 @@ public class CulturalRequirementRepository {
                       WHERE cr.victim_id = ? AND dv.is_soft_deleted = FALSE
                       ORDER BY cr.requirement_category
                   """;
-                  
+
     List<CulturalRequirement> requirements = new ArrayList<>();
 
     try (PreparedStatement stmt = dbConnect.prepareStatement(query)) {
@@ -128,7 +158,15 @@ public class CulturalRequirementRepository {
     return requirements;
   }
 
-  // check if victim has requirement
+  /**
+   * Checks if a victim already has a cultural requirement for a specific category in the database.
+   * This is used to prevent duplicate entries for the same category.
+   * 
+   * @param victimId The ID of the victim being checked.
+   * @param category The category of the requirement being checked (e.g., "Dietary", "Religious").
+   * @return true if the victim already has a requirement for the specified category, false otherwise.
+   * @throws RuntimeException if there is an error checking the requirement in the database.
+   */
   public boolean victimHasRequirement(int victimId, String category) {
     String query =
       "SELECT 1 FROM CulturalRequirement WHERE victim_id = ? AND requirement_category = ?";

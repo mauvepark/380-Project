@@ -9,6 +9,10 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the VictimService class.
+ * These tests check victim creation, updates, deletion, and loading active victims.
+ */
 public class VictimServiceTest {
 
     private VictimService service;

@@ -7,6 +7,10 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the DisasterVictim class.
+ * These tests check object creation, updates, and validation for victims.
+ */
 public class DisasterVictimTest {
 
     private DisasterVictim victim1;

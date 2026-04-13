@@ -7,6 +7,10 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the CulturalRequirementService class.
+ * These tests check adding, updating, deleting, and retrieving cultural requirements.
+ */
 public class CulturalRequirementServiceTest {
 
     private CulturalRequirementService service;

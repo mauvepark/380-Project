@@ -7,6 +7,9 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the MedicalRecord class. These tests cover constructor validation as well as setter/getter methods for model class.
+ */
 public class MedicalRecordTest {
 
     private MedicalRecord record;

@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the Skill class.
+ * These tests check object creation and validation for skills.
+ */
 public class SkillTest {
 
      @Test

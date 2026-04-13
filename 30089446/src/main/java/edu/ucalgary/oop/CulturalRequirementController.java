@@ -2,6 +2,11 @@ package edu.ucalgary.oop;
 
 import java.util.*;
 
+/**
+ * Controller class to manage the cultural and religious requirements of disaster victims.
+ * This class provides a menu-driven interface for users to view, add, update, and remove cultural requirements for victims.
+ * It interacts with the CulturalRequirementService to perform the necessary operations and handles user input and output.
+ */
 public class CulturalRequirementController {
     private final CulturalRequirementService service;
     private final VictimService victimService;
@@ -14,7 +19,13 @@ public class CulturalRequirementController {
         this.scanner = scanner;
     }
 
-    // menu
+    /**
+     * Displays the menu for managing cultural and religious requirements and handles user input to perform the selected operations.
+     * 
+     * @throws IllegalArgumentException if the user input is invalid (e.g., selecting a non-existent victim or category).
+     * @throws IllegalStateException if the operation cannot be performed due to the current state of the data (e.g., trying to add a requirement that already exists for a victim).
+     * @throws RuntimeException if there is an error performing the operation (e.g., database errors).
+     */
     public void menu() {
         boolean running = true;
 
@@ -61,7 +72,10 @@ public class CulturalRequirementController {
         }
     }
 
-    // view all categories/options from file
+    /**
+     * Displays the available requirement categories and options. 
+     * The categories and options are retrieved from the CulturalRequirementService and displayed in a user-friendly format.
+     */
     public void viewAvailableOptions() {
         System.out.println();
         System.out.println("----------- Available Requirement Options -----------");
@@ -85,7 +99,11 @@ public class CulturalRequirementController {
         }
     }
 
-    // view requirements for one victim
+    /**
+     * Displays the cultural and religious requirements for a specific victim. 
+     * The user is prompted to select a victim from the list of active victims, 
+     * and then the requirements for that victim are retrieved and displayed.
+     */
     public void viewRequirementsForVictim() {
         System.out.println();
         System.out.println("----------- View Victim Requirements -----------");
@@ -107,7 +125,10 @@ public class CulturalRequirementController {
         }
     }
 
-    // add requirement
+    /**
+     * Adds a cultural requirement to a victim. The user is prompted to select a victim, 
+     * choose a category and option for the requirement,
+     */
     public void addRequirementToVictim() {
         System.out.println();
         System.out.println("----------- Add Requirement To Victim -----------");
@@ -125,7 +146,11 @@ public class CulturalRequirementController {
         System.out.println("Requirement added successfully.");
     }
 
-    // set or update requirement
+    /**
+     * Sets or updates a cultural requirement for a victim. The user is prompted to select a victim,
+     * choose a category and option for the requirement, and then the requirement is set for the victim. 
+     * If the victim already has a requirement for the selected category, it will be updated to the
+     */
     public void setRequirementForVictim() {
         System.out.println();
         System.out.println("----------- Set Or Update Requirement -----------");
@@ -143,7 +168,11 @@ public class CulturalRequirementController {
         System.out.println("Requirement set successfully.");
     }
 
-    // remove requirement
+    /**
+     * Removes a cultural requirement from a victim. The user is prompted to select a victim,
+     * then select which requirement to remove from that victim's list of requirements.
+     * The selected requirement is then removed from the victim.
+     */
     public void removeRequirementFromVictim() {
         System.out.println();
         System.out.println("----------- Remove Requirement From Victim -----------");
@@ -183,7 +212,13 @@ public class CulturalRequirementController {
         System.out.println("Requirement removed successfully.");
     }
 
-    // select victim
+    /**
+     * Prompts the user to select a victim from the list of active victims. The victim
+     * is selected by entering the victim's ID. If the entered ID does not correspond to an active victim,
+     * an error message is displayed and the user is prompted to try again.
+     * 
+     * @return The selected DisasterVictim object, or null if no valid victim was selected.
+     */
     private DisasterVictim selectVictim() {
         List<DisasterVictim> victims = victimService.getActiveVictims();
 
@@ -208,6 +243,14 @@ public class CulturalRequirementController {
         return null;
     }
 
+    /**
+     * Prompts the user to choose a requirement category from the list of available categories. 
+     * The categories are retrieved from the CulturalRequirementService and displayed in a numbered list. 
+     * The user selects a category by entering the corresponding number. 
+     * If the entered number is invalid, an error message is displayed and the user is prompted to try again.
+     * 
+     * @return The name of the selected category. or an error message is displayed if no valid selection was made.
+     */
     private String chooseCategory() {
         List<String> categories = service.getSortedCategories();
 
@@ -229,6 +272,13 @@ public class CulturalRequirementController {
         }
     }
 
+    /**
+     * Prompts the user to choose a requirement option for a given category. 
+     * The options for the category are retrieved from the CulturalRequirementService and displayed in a numbered list.
+     * 
+     * @param category The category for which to choose an option. The options displayed will be specific to this category.
+     * @return The name of the selected option. An error message is displayed if no valid selection was made.
+     */
     private String chooseOption(String category) {
         List<String> options = service.getSortedOptionsForCategory(category);
 
@@ -250,6 +300,11 @@ public class CulturalRequirementController {
         }
     }
 
+    /**
+     * Prints a summary of a cultural requirement in a user-friendly format. This includes the category and option of the requirement.
+      * 
+      * @param requirement The CulturalRequirement object to be printed.
+     */
     private void printRequirement(CulturalRequirement requirement) {
         System.out.println("Category: " + requirement.getCategory() + " | Option: " + requirement.getOption());
     }
@@ -271,6 +326,14 @@ public class CulturalRequirementController {
                             + " | " + ageInfo + " | Gender: " + victim.getGender() + " | Entry Date: " + victim.getEntryDate());
     }
 
+    /**
+     * Reads an integer input from the user with the given prompt. 
+     * If the user enters an invalid integer, an error message is displayed and the user is prompted to try again
+     *  until a valid integer is entered.
+     * 
+     * @param prompt The message to display to the user when asking for input.
+     * @return The integer value entered by the user. An error message is displayed if the input is not a valid integer, and the user is prompted to try again.
+     */
     private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -284,6 +347,13 @@ public class CulturalRequirementController {
         }
     }
 
+    /**
+     * Prompts the user for a yes/no confirmation with the given prompt message. 
+     * The user must enter "Y", "Yes", "N", or "No" (case-insensitive).
+     * 
+     * @param prompt The message to display to the user when asking for confirmation.
+     * @return true if the user confirms with "Y" or "Yes", false if the user declines with "N" or "No". An error message is displayed if the input is invalid, and the user is prompted to try again.
+     */
     private boolean confirm(String prompt) {
         while (true) {
             System.out.print(prompt);
