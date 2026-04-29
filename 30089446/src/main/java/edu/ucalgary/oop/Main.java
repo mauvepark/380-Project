@@ -82,7 +82,6 @@ public class Main {
    * @param scanner the Scanner object to read user input
    * @param prompt the message to display to the user when asking for input
    * @return the integer value entered by the user
-   * @throws RuntimeException if the user input cannot be parsed as an integer
    */
   private static int readInt(Scanner scanner, String prompt) {
     while (true) {
@@ -91,7 +90,7 @@ public class Main {
 
       try {
         return Integer.parseInt(input);
-      } catch (RuntimeException e) {
+      } catch (NumberFormatException e) {
         System.out.println("Please enter a valid number.");
       }
     }

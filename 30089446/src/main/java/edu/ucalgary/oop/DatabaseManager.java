@@ -37,7 +37,13 @@ public class DatabaseManager {
     private void loadConfig() {
         Properties prop = new Properties();
 
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("DatabaseCreds.properties")) {
+        InputStream raw = getClass().getClassLoader().getResourceAsStream("DatabaseCreds.properties");
+        if (raw == null) {
+            throw new RuntimeException(
+                "DatabaseCreds.properties not found on classpath; ensure it is under src/main/resources and included in the build output."
+            );
+        }
+        try (InputStream input = raw) {
             prop.load(input);
 
             this.url = prop.getProperty("url");
@@ -48,6 +54,8 @@ public class DatabaseManager {
                 throw new RuntimeException("Missing database configuration values");
             }
 
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException("Failed to load database config", e);
         }
